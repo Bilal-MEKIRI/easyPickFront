@@ -1,0 +1,130 @@
+@font-face {
+    font-family: "Raleway";
+    src: url("../../fonts/Raleway-VariableFont_wght.ttf");
+}
+header{
+    background-color: #2c2c2c;
+.header{
+    width: 1200px;
+    height: 100px;
+    background-color: #2c2c2c;
+    margin: 0 auto;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    div{
+        width: fit-content;
+        height: fit-content;
+        text-align: center;
+        #logo-header{
+            height: 80px;
+        }
+    }
+    nav{
+        width: 40%;
+        ul{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            li{
+                color: white;
+                font-family: "Raleway";
+                font-size: 1.3rem;
+                font-weight: 500;
+                cursor: pointer;
+                text-decoration: none;
+                transition: 0.06s;
+                &:hover{
+                    border-bottom: 3px solid #00ff75;
+                }
+                .link{
+                    text-decoration: none;
+                    color: white;
+                }
+            }
+        }
+    }
+    .btn{
+        width: fit-content;
+        height: 25px;
+        padding: 7px;
+        text-align: center;
+        color: white;
+        font-family: "Raleway";
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding-top: 15px;
+        background-color: #00ff7771;
+        text-decoration: none;
+        border-radius: 7px;
+        transition: 0.3s;
+        &:hover{
+            background-color: white;
+            color: #00ff75;
+            transform: scale(1.05);
+            
+        }
+    }
+}
+}
+footer{
+       background-color: #2c2c2c; 
+       padding-top: 170px;
+.footer1, .footer2{
+    font-family: "Raleway";
+    width: 1200px;
+    height: 100px;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .info{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        .link{
+            color: white;
+            text-decoration: none;
+            margin: 15px;
+            transition: 0.3s;
+            &:hover{
+                transform: scale(1.07);
+                color: #00ff75;
+            }
+        }
+    }
+    .social{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        .img{
+            margin: 10px;
+            transition: 0.5s;
+            &:hover{
+                cursor: pointer;
+                transform: scale(1.1);
+                background-color: #00ff75;
+                border-radius: 40%;
+            }
+        }
+
+    }
+}
+}
+
+.footer2{
+    height: 50px;
+    margin-top: 0;
+    justify-content: space-between;
+    #logo-footer{
+        margin: 0;
+        height: 70px;
+    }
+    div{
+        color: white;
+        font-size: 1.2rem;
+    }
+}
