@@ -1,0 +1,44 @@
+.pages{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 200px;
+    margin: 0 auto;
+    padding: 20px;
+    .page-number{
+        width: 20px;
+        height: 20px;
+        padding: 5px;
+        background-color: #00ff75;
+        text-align: center;
+        border-radius: 45px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: 0.2s;
+        &.active{
+            background-color: white;
+            color: #00ff75;
+        }
+        &:hover{
+            cursor: pointer;
+            transform: scale(1.02);
+            background-color: white;
+            color: #00ff75;
+        }
+    }
+    .next-page{
+        transition: all 0.2s;
+        &:hover{
+            cursor: pointer;
+            transform: scale(1.15);
+        }
+    }
+    #next-page{
+        background-color: #2c2c2c;
+        color: white;
+        &:hover{
+            background-color: white;
+            color: #00ff75;
+        }
+    }
+}

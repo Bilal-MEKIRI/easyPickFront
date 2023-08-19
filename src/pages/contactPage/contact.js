@@ -1,23 +1,46 @@
 import React, { useState } from "react";
 import "../../components/resetCSS/reset.scss";
+import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 import "./contact.scss";
+import axios from "axios";
+import DOMPurify from "dompurify";
 
 export default function Contact() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  // eslint-disable-next-line
   const [email, setEmail] = useState("");
-  // eslint-disable-next-line
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(firstName);
-    console.log(lastName);
+    try {
+      const sanitizedFirstName = DOMPurify.sanitize(firstName);
+      const sanitizedLastName = DOMPurify.sanitize(lastName);
+      const sanitizedEmail = DOMPurify.sanitize(email);
+      const sanitizedMessage = DOMPurify.sanitize(message);
+
+      const response = await axios.post("http://localhost:3030/emails", {
+        firstName: sanitizedFirstName,
+        lastName: sanitizedLastName,
+        email: sanitizedEmail,
+        message: sanitizedMessage,
+      });
+
+      if (response.status === 200) {
+        // Email successfully posted
+        console.log("Email sent successfully!");
+      } else {
+        // Handling error cases
+        console.error("Error sending email: ", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error sending email: ", error.message);
+    }
   };
 
   return (
     <main className="contact-form">
+      <ScrollToTopBtn />
       <section className="contact-form-container">
         <div className="main-grid" id="paiment">
           <form onSubmit={handleSubmit}>

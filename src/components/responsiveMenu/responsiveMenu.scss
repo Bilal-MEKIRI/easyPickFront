@@ -1,0 +1,39 @@
+.responsive-menu{
+    position: absolute;
+    top: 140px;
+    right: 0;
+    width: 100% !important;
+    margin: auto;
+    padding-left: 20px;
+    height: fit-content;
+    background-color: #00ff77;
+    font-family: "Raleway";
+    .menu-items{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 80%;
+        height: fit-content;
+        list-style: none;
+        #categories{
+            margin: 10px;
+            text-decoration: none;
+            color: #2c2c2c;
+            font-size: 1.2rem;
+            font-weight: 600;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        .item{
+            margin: 10px;
+            .link{
+                text-decoration: none;
+                color: #2c2c2c;
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+        }
+    }
+}

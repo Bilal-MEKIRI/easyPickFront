@@ -1,10 +1,114 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
+import { useCategory } from "../../categoryContext";
+import { useLocation } from "react-router-dom"; // Import useLocation
+import axios from "axios";
 import "../../components/resetCSS/reset.scss";
+import Card from "../../components/contentCard/contentCard.js";
 import "./movies.scss";
+import Pagination from "../../components/pagination/pagination";
+import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 
 export default function Movies() {
+  const location = useLocation(); // Use useLocation hook to access location state
+  const { currentPage: currentPageFromState } = location.state || {}; // Destructure currentPage from state
+  const [movies, setMovies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(currentPageFromState || 1); // Initialize currentPage from state, default to 1
+  const moviesPerPage = 24; // Number of movies to show per page
+  const urlMovies = "http://localhost:3030/movies";
+  const { selectedCategory } = useCategory();
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        let response;
+        if (selectedCategory) {
+          response = await axios.get(`${urlMovies}/genre/${selectedCategory}`);
+        } else {
+          // Check if movies are in localStorage before making API request
+          const cachedMovies = localStorage.getItem("cachedMovies");
+          if (cachedMovies) {
+            setMovies(JSON.parse(cachedMovies));
+            return;
+          }
+          // Fetch movies from the server since they are not in localStorage
+          response = await axios.get(urlMovies);
+
+          // Cache the movies in localStorage
+          localStorage.setItem("cachedMovies", JSON.stringify(response.data));
+        }
+        setMovies(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchMovies();
+  }, [selectedCategory]);
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // State to hold the search query
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Function to handle search input changes
+  const handleSearchInputChange = (event) => {
+    const sanitizedInput = DOMPurify.sanitize(event.target.value);
+    setSearchQuery(sanitizedInput);
+    // Reset current page to 1 whenever the search query changes
+    setCurrentPage(1);
+  };
+
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Calculate the total pages and pages range based on the filtered and date-sorted movies
+  const sortedAndFilteredMovies = filteredMovies
+    .filter((movie) => new Date(movie.releaseDate) <= currentDate)
+    .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+
+  const totalPages = Math.ceil(sortedAndFilteredMovies.length / moviesPerPage);
+  const maxPagesToShow = 3;
+  const pagesRange = Math.min(maxPagesToShow, totalPages);
+  const startingPageNumber = Math.max(
+    1,
+    Math.min(
+      currentPage - Math.floor(maxPagesToShow / 2),
+      totalPages - maxPagesToShow + 1
+    )
+  );
+
+  // Function to get movies for the current page
+  const getCurrentPageMovies = () => {
+    const startIndex = (currentPage - 1) * moviesPerPage;
+    const endIndex = startIndex + moviesPerPage;
+    const slicedMovies = sortedAndFilteredMovies.slice(startIndex, endIndex);
+    return slicedMovies;
+  };
+
+  // Function to handle the next arrow click
+  const handleNextPageClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Function to handle the previous arrow click
+  const handlePreviousPageClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Function to handle page number click
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <main className="movies">
+      <ScrollToTopBtn />
       <section className="main">
         <section className="intro">
           <h1 className="title">Trouvez votre film préférée</h1>
@@ -20,161 +124,54 @@ export default function Movies() {
               name="search-bar"
               id="search-bar"
               placeholder="Chercher"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
             ></input>
           </div>
         </section>
-        <section className="pages">
-          <div className="page-number">1</div>
-          <div className="page-number">2</div>
-          <div className="page-number">3</div>
-          <div className="page-number" id="next-page">
-            {">"}
-          </div>
-        </section>
-        <section className="trending">
-          <h2>Les plus populaires</h2>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/The Mount 2.jpg" alt="" />
-              <p className="info">The Mount 2 - 142m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/robots.jpg" alt="" />
-              <p className="info">robots 120m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Rally Road Racers.jpg" alt="" />
-              <p className="info">Rally Road Racers 110m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/One Ranger.jpg" alt="" />
-              <p className="info">One Ranger 100</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/My Everest.jpg" alt="" />
-              <p className="info">My Everest 130m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/mario.jpg" alt="" />
-              <p className="info">The Super Mario Bros. Movie 92m</p>
-            </div>
-          </section>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/Hunger.jpg" alt="" />
-              <p className="info">Hunger 130m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/guardians of the galaxy.jpg" alt="" />
-              <p className="info">Guardians of the Galaxy Volume 3 150m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/65.jpg" alt="" />
-              <p className="info">65 123m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Hypnotic.jpg" alt="" />
-              <p className="info">Hypnotic</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the mother.jpg" alt="" />
-              <p className="info">The Mother 115m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/tocatchakiller.jpg" alt="" />
-              <p className="info">To Catch a Killer 119m</p>
-            </div>
-          </section>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/Dead Shot.jpg" alt="" />
-              <p className="info">Dead Shot 100m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/BlackBerry.jpg" alt="" />
-              <p className="info">BlackBerry 150m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the covenant.jpg" alt="" />
-              <p className="info">The Covenant 123m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Air.jpg" alt="" />
-              <p className="info">Air</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/avatar.jpg" alt="" />
-              <p className="info">Avatar 150m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Champions.jpg" alt="" />
-              <p className="info">Champions 119m</p>
-            </div>
-          </section>
-        </section>
+        {!searchQuery && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            pagesRange={pagesRange}
+            startingPageNumber={startingPageNumber}
+            handlePageClick={handlePageClick}
+            handlePreviousPageClick={handlePreviousPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+        )}
         <section className="movies">
-          <h2>Films sortis récemment</h2>
+          <h2>Movies</h2>
           <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/noise.jpg" alt="" />
-              <p className="info">Noise 142m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/scream6.jpg" alt="" />
-              <p className="info">Scream VI 120m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Black Knight.jpg" alt="" />
-              <p className="info">Black Knight 100min</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Death Roulette.jpg" alt="" />
-              <p className="info">Death Roulette 110min</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/muted.jpg" alt="" />
-              <p className="info">Muted SS1 - EPS 6</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/mario.jpg" alt="" />
-              <p className="info">The Super Mario Bros. Movie 92m</p>
-            </div>
-          </section>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/platonic.jpg" alt="" />
-              <p className="info">Platonic SS1-EPS 3</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/guardians of the galaxy.jpg" alt="" />
-              <p className="info">Guardians of the Galaxy Volume 3 150m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the covenant.jpg" alt="" />
-              <p className="info">The Covenant 123m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Plane.jpg" alt="" />
-              <p className="info">Plane 100m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the mother.jpg" alt="" />
-              <p className="info">The Mother 115m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/tocatchakiller.jpg" alt="" />
-              <p className="info">To Catch a Killer 119m</p>
-            </div>
+            {getCurrentPageMovies().map((element, index) => {
+              const posterUrl = element.imagePath
+                ? element.imagePath
+                : element.backdropUrl;
+              return (
+                <React.Fragment key={index}>
+                  <Card
+                    poster={posterUrl}
+                    title={element.title}
+                    duration={element.duration}
+                    id={element._id}
+                    currentPage={currentPage} // Pass currentPage to Card component
+                  />
+                </React.Fragment>
+              );
+            })}
           </section>
         </section>
-        <section className="pages">
-          <div className="page-number">1</div>
-          <div className="page-number">2</div>
-          <div className="page-number">3</div>
-          <div className="page-number" id="next-page">
-            {">"}
-          </div>
-        </section>
+        {!searchQuery && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            pagesRange={pagesRange}
+            startingPageNumber={startingPageNumber}
+            handlePageClick={handlePageClick}
+            handlePreviousPageClick={handlePreviousPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+        )}
       </section>
     </main>
   );
