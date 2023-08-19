@@ -1,10 +1,114 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
 import "../../components/resetCSS/reset.scss";
+import Card from "../../components/contentCard/contentCard.js";
+import Pagination from "../../components/pagination/pagination";
+import { useCategory } from "../../categoryContext";
+import { useLocation } from "react-router-dom"; // Import useLocation
 import "./series.scss";
+import axios from "axios";
+import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 
 export default function Series() {
+  const location = useLocation(); // Use useLocation hook to access location state
+  const { currentPage: currentPageFromState } = location.state || {}; // Destructure currentPage from state
+  const [series, setSeries] = useState([]);
+  const [currentPage, setCurrentPage] = useState(currentPageFromState || 1); // Initialize currentPage from state, default to 1
+  const seriesPerPage = 24; // Number of series to show per page
+  const urlSeries = "http://localhost:3030/series";
+  const { selectedCategory } = useCategory();
+
+  useEffect(() => {
+    const fetchSeries = async () => {
+      try {
+        let response;
+        if (selectedCategory) {
+          response = await axios.get(`${urlSeries}/genre/${selectedCategory}`);
+        } else {
+          // Check if movies are in localStorage before making API request
+          const cachedSeries = localStorage.getItem("cachedSeries");
+          if (cachedSeries) {
+            setSeries(JSON.parse(cachedSeries));
+            return;
+          }
+          // Fetch movies from the server since they are not in localStorage
+          response = await axios.get(urlSeries);
+
+          // Cache the movies in localStorage
+          localStorage.setItem("cachedSeries", JSON.stringify(response.data));
+        }
+        setSeries(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSeries();
+  }, [selectedCategory]);
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // State to hold the search query
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Function to handle search input changes
+  const handleSearchInputChange = (event) => {
+    const sanitizedInput = DOMPurify.sanitize(event.target.value);
+    setSearchQuery(sanitizedInput);
+    // Reset current page to 1 whenever the search query changes
+    setCurrentPage(1);
+  };
+
+  const filteredSeries = series.filter((series) =>
+    series.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Calculate the total pages and pages range based on the filtered and date-sorted series
+  const sortedAndFilteredSeries = filteredSeries
+    .filter((movie) => new Date(movie.releaseDate) <= currentDate)
+    .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+
+  const totalPages = Math.ceil(sortedAndFilteredSeries.length / seriesPerPage);
+  const maxPagesToShow = 3;
+  const pagesRange = Math.min(maxPagesToShow, totalPages);
+  const startingPageNumber = Math.max(
+    1,
+    Math.min(
+      currentPage - Math.floor(maxPagesToShow / 2),
+      totalPages - maxPagesToShow + 1
+    )
+  );
+
+  // Function to get series for the current page
+  const getCurrentPageSeries = () => {
+    const startIndex = (currentPage - 1) * seriesPerPage;
+    const endIndex = startIndex + seriesPerPage;
+    const slicedMovies = sortedAndFilteredSeries.slice(startIndex, endIndex);
+    return slicedMovies;
+  };
+
+  // Function to handle the next arrow click
+  const handleNextPageClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Function to handle the previous arrow click
+  const handlePreviousPageClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Function to handle page number click
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <main className="series">
+      <ScrollToTopBtn />
       <section className="main">
         <section className="intro">
           <h1 className="title">Trouvez votre série préférée</h1>
@@ -20,165 +124,55 @@ export default function Series() {
               name="search-bar"
               id="search-bar"
               placeholder="Chercher"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
             ></input>
           </div>
         </section>
-        <section className="pages">
-          <div className="page-number">1</div>
-          <div className="page-number">2</div>
-          <div className="page-number">3</div>
-          <div className="page-number" id="next-page">
-            {">"}
-          </div>
-        </section>
-        <section className="trending">
-          <h2>Les plus populaires</h2>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/Black Snow.jpg" alt="" />
-              <p className="info">Black Snow SS2 - EPS 5</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Gotham Knights.jpg" alt="" />
-              <p className="info">Gotham Knights SS1 - EPS 8</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/chainSawMan.jpg" alt="" />
-              <p className="info">Chainsaw Man SS1 -EPS 12</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/missing.jpg" alt="" />
-              <p className="info">Missing: Dead or Alive SS 1 - EPS 4 1h00</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/muted.jpg" alt="" />
-              <p className="info">Muted SS1-EPS 6</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Kaleidoscope.jpg" alt="" />
-              <p className="info">Kaleidoscope SS1 - EPS 9</p>
-            </div>
-          </section>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/platonic.jpg" alt="" />
-              <p className="info">Platonic SS1-EPS 3</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Shrinking.jpg" alt="" />
-              <p className="info">Shrinking SS1 - EPS 14</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the covenant.jpg" alt="" />
-              <p className="info">The Covenant</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/The Snow Girl.jpg" alt="" />
-              <p className="info">The Snow Girl SS1 - EPS 8</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the mother.jpg" alt="" />
-              <p className="info">The Mother</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/The Watchful Eye.jpg" alt="" />
-              <p className="info">The Watchful Eye</p>
-            </div>
-          </section>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/Decoy.jpg" alt="" />
-              <p className="info">Decoy SS1 - EPS 10</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Duty After School.jpg" alt="" />
-              <p className="info">Duty After School SS1 - EPS 5</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Outlast.jpg" alt="" />
-              <p className="info">Outlast SS1 - EPS 11</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Air.jpg" alt="" />
-              <p className="info">Air SS1 - EPS 4</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/avatar.jpg" alt="" />
-              <p className="info">Avatar SS1 - EPS 9</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/War Sailor.jpg" alt="" />
-              <p className="info">War Sailor SS2 - EPS 5</p>
-            </div>
-          </section>
-        </section>
-
+        {!searchQuery && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            pagesRange={pagesRange}
+            startingPageNumber={startingPageNumber}
+            handlePageClick={handlePageClick}
+            handlePreviousPageClick={handlePreviousPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+        )}
         <section className="series">
-          <h2>Nouvelles Séries</h2>
+          <h2>Tv Series</h2>
           <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/Steel Town Murdereers.jpg" alt="" />
-              <p className="info">Steel Town Murdereers SS1</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Attack On Titan.jpg" alt="" />
-              <p className="info">Attack On Titan SS3</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Chimp Empire.jpg" alt="" />
-              <p className="info">Chimp Empire SS1 -EPS 12</p>
-            </div>
-            <div className="content">
-              <img
-                src="/assets/images/Demon Slayer Kimetsu no Yaiba.jpg"
-                alt=""
-              />
-              <p className="info">Demon Slayer Kimetsu no Yaiba</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/The last Thing he told me.jpg" alt="" />
-              <p className="info">The last Thing he told me SS1 - EPS 6</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Nier automata.jpg" alt="" />
-              <p className="info">Nier automata</p>
-            </div>
-          </section>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/platonic.jpg" alt="" />
-              <p className="info">Platonic SS1-EPS 3</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/guardians of the galaxy.jpg" alt="" />
-              <p className="info">Guardians of the Galaxy Volume 3 150m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the covenant.jpg" alt="" />
-              <p className="info">The Covenant 123m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/jujutsu.jpg" alt="" />
-              <p className="info">Jujutsu Kaisen 1h00</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the mother.jpg" alt="" />
-              <p className="info">The Mother 115m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/tocatchakiller.jpg" alt="" />
-              <p className="info">To Catch a Killer 119m</p>
-            </div>
+            {/* Sort and Slice the series Array */}
+            {getCurrentPageSeries().map((element, index) => {
+              const posterUrl = element.imagePath
+                ? element.imagePath
+                : element.backdropUrl;
+              return (
+                <React.Fragment key={index}>
+                  <Card
+                    poster={posterUrl}
+                    title={element.title}
+                    seasons={element.seasons}
+                    id={element._id}
+                    currentPage={currentPage} // Pass currentPage to Card component
+                  />
+                </React.Fragment>
+              );
+            })}
           </section>
         </section>
-        <section className="pages">
-          <div className="page-number">1</div>
-          <div className="page-number">2</div>
-          <div className="page-number">3</div>
-          <div className="page-number" id="next-page">
-            {">"}
-          </div>
-        </section>
+        {!searchQuery && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            pagesRange={pagesRange}
+            startingPageNumber={startingPageNumber}
+            handlePageClick={handlePageClick}
+            handlePreviousPageClick={handlePreviousPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+        )}
       </section>
     </main>
   );

@@ -7,7 +7,7 @@
         padding: 100px;
         .main-grid{
             form{
-                background-color: #00ff7771;
+                background-color: #00ff7770;
                 border-radius: 20px;
                 color: white;
                 display: flex;
@@ -65,3 +65,57 @@
         }
     }
 }
+@media(max-width: 1400px){
+    .contact-form{
+        width: 100%;
+        .contact-form-container{
+            width: 80%;
+            padding: 0;
+            .main-grid{
+                width: 100%;
+                form{
+                    margin: 0 auto;
+                }
+            }
+        }
+    }
+    }
+    @media(max-width: 1000px){
+        .contact-form{
+            width: 100%;
+            .contact-form-container{
+                width: 100%;
+                padding: 0;
+                .main-grid{
+                    width: 100%;
+                    padding: 0;
+                    form{
+                        margin: 0 auto;
+                        input, textarea{
+                            width: 80%;
+                        }
+                    }
+                }
+            }
+        }
+        }
+        @media(max-width: 800px){
+            .contact-form{
+                width: 100%;
+                .contact-form-container{
+                    width: 80%;
+                    padding: 0;
+                    .main-grid{
+                        width: 100%;
+                        padding: 0;
+                        form{
+                            margin: 0 auto;
+                            width: 90%;
+                            input, textarea{
+                                width: 80%;
+                            }
+                        }
+                    }
+                }
+            }
+            }

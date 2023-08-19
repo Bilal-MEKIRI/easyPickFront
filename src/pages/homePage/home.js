@@ -1,11 +1,87 @@
 import React from "react";
+import axios from "axios";
+import DOMPurify from "dompurify";
+import { useState, useEffect } from "react";
 import "../../components/resetCSS/reset.scss";
 import "./home.scss";
 import Slider from "../../components/autoSlider/slider.js";
+import Card from "../../components/contentCard/contentCard.js";
+import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 
 export default function Home() {
+  const [movies, setMovies] = useState([]);
+  const [series, setSeries] = useState([]);
+  const urlMovies = "http://localhost:3030/movies";
+  const urlSeries = "http://localhost:3030/series";
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        // Check if movies are in localStorage before making API request
+        const cachedMovies = localStorage.getItem("cachedMovies");
+        if (cachedMovies) {
+          setMovies(JSON.parse(cachedMovies));
+          return;
+        }
+
+        const response = await axios.get(urlMovies);
+
+        // Cache the movies in localStorage
+        localStorage.setItem("cachedMovies", JSON.stringify(response.data));
+
+        setMovies(response);
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const fetchSeries = async () => {
+      try {
+        // Check if series are in localStorage before making API request
+        const cachedSeries = localStorage.getItem("cachedSeries");
+        if (cachedSeries) {
+          setSeries(JSON.parse(cachedSeries));
+          return;
+        }
+        const response = await axios.get(urlSeries);
+
+        // Cache the movies in localStorage
+        localStorage.setItem("cachedSeries", JSON.stringify(response.data));
+
+        setSeries(response);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMovies();
+    fetchSeries();
+  }, []);
+
+  // State to hold the search query
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Function to handle search input changes
+  const handleSearchInputChange = (event) => {
+    const sanitizedInput = DOMPurify.sanitize(event.target.value);
+    setSearchQuery(sanitizedInput);
+  };
+
+  // Function to filter movies and series based on the search query
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredSeries = series.filter((series) =>
+    series.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Get the current date
+  const currentDate = new Date();
+
   return (
     <main className="home">
+      <ScrollToTopBtn />
       <section className="main">
         <section className="intro">
           <h1 className="title">
@@ -23,145 +99,127 @@ export default function Home() {
               name="search-bar"
               id="search-bar"
               placeholder="Chercher"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
             ></input>
           </div>
-
-          <p className="description">
-            Bienvenue sur notre site de streaming de films et séries ! Facilitez
-            votre recherche et découvrez des contenus passionnants grâce à notre
-            interface conviviale. Utilisez nos filtres puissants pour trouver le
-            film ou la série qui correspond à vos goûts. Consultez les synopsis
-            détaillés et regardez les bandes-annonces pour prendre une décision
-            éclairée. Créez un compte pour partager vos avis et recommandations
-            avec la communauté. Rejoignez-nous et plongez dans un univers infini
-            de divertissement ! Profitez d'une expérience utilisateur optimale
-            avec une navigation fluide et intuitive. Notre vaste bibliothèque
-            vous offre un choix illimité de films et de séries captivants, des
-            dernières sorties aux classiques intemporels. Explorez des genres
-            variés, des thrillers palpitants aux comédies hilarantes en passant
-            par les drames émouvants. Merci de nous avoir choisis comme votre
-            destination ultime pour le divertissement cinématographique.
-            Préparez-vous à vivre des émotions intenses et des moments
-            mémorables, juste à quelques clics de souris.
-          </p>
         </section>
-        <div className="slider1">
+        {/* <div className="slider1">
           <Slider />
-        </div>
+        </div> */}
         <section className="trending">
-          <h2>Les plus populaires</h2>
+          <h2>Popular movies and series</h2>
           <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/fastX.jpg" alt="" />
-              <p className="info">Fast X 142m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/John-Wick-trailer.jpg" alt="" />
-              <p className="info">John Wick: Chapter 4 120m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/chainSawMan.jpg" alt="" />
-              <p className="info">Chainsaw Man SS1 -EPS 12</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/missing.jpg" alt="" />
-              <p className="info">Missing: Dead or Alive SS 1 - EPS 4 1h00</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/muted.jpg" alt="" />
-              <p className="info">Muted SS1-EPS 6</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/mario.jpg" alt="" />
-              <p className="info">The Super Mario Bros. Movie 92m</p>
-            </div>
-          </section>
-          <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/platonic.jpg" alt="" />
-              <p className="info">Platonic SS1-EPS 3</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/guardians of the galaxy.jpg" alt="" />
-              <p className="info">Guardians of the Galaxy Volume 3 150m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the covenant.jpg" alt="" />
-              <p className="info">The Covenant 123m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/jujutsu.jpg" alt="" />
-              <p className="info">Jujutsu Kaisen 1h00</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/the mother.jpg" alt="" />
-              <p className="info">The Mother 115m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/tocatchakiller.jpg" alt="" />
-              <p className="info">To Catch a Killer 119m</p>
-            </div>
+            {/* Sort and Slice the movies Array */}
+            {filteredMovies
+              .slice() // Create a shallow copy of the movies array
+              .filter(
+                (movie) =>
+                  new Date(movie.releaseDate) <= currentDate &&
+                  new Date(movie.releaseDate) > new Date("2023-01-01")
+              ) // Filter out movies with release dates in the future
+              .sort((a, b) => b.popularity - a.popularity) // Sort movies in descending order of popularity
+              .slice(0, 6) // Get the top 6 most popular movies
+              .map((element, index) => {
+                const posterUrl = element.imagePath
+                  ? element.imagePath
+                  : element.backdropUrl;
+                return (
+                  <React.Fragment key={index}>
+                    <Card
+                      poster={posterUrl}
+                      title={element.title}
+                      duration={element.duration}
+                      id={element._id}
+                    />
+                  </React.Fragment>
+                );
+              })}
+            {/* Sort and Slice the series Array */}
+            {filteredSeries
+              .slice() // Create a shallow copy of the series array
+              .filter(
+                (series) =>
+                  new Date(series.releaseDate) <= currentDate &&
+                  new Date(series.releaseDate) > new Date("2023-01-01")
+              ) // Filter out series with release dates in the future
+              .sort((a, b) => b.popularity - a.popularity) // Sort series in descending order of score
+              .slice(0, 6) // Get the top 6 most popular series
+              .map((element, index) => {
+                const posterUrl = element.imagePath
+                  ? element.imagePath
+                  : element.backdropUrl;
+                return (
+                  <React.Fragment key={index}>
+                    <Card
+                      poster={posterUrl}
+                      title={element.title}
+                      seasons={element.seasons}
+                      id={element._id}
+                    />
+                  </React.Fragment>
+                );
+              })}
           </section>
         </section>
         <section className="movies">
-          <h2>Films sortis récemment</h2>
+          <h2>Top rated movies</h2>
           <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/noise.jpg" alt="" />
-              <p className="info">Noise 142m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/scream6.jpg" alt="" />
-              <p className="info">Scream VI 120m</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Black Knight.jpg" alt="" />
-              <p className="info">Black Knight 100min</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Death Roulette.jpg" alt="" />
-              <p className="info">Death Roulette 110min</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/muted.jpg" alt="" />
-              <p className="info">Muted SS1 - EPS 6</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/mario.jpg" alt="" />
-              <p className="info">The Super Mario Bros. Movie 92m</p>
-            </div>
+            {/* Sort and Slice the movies Array by Release Date */}
+            {filteredMovies
+              .slice() // Create a shallow copy of the movies array
+              .filter(
+                (movie) =>
+                  new Date(movie.releaseDate) <= currentDate &&
+                  new Date(movie.releaseDate) > new Date("2023-07-01")
+              ) // Filter out movies with release dates in the future
+              .sort((a, b) => b.score - a.score)
+              .slice(0, 12) // Get the 6 most recent movies
+              .map((element, index) => {
+                const posterUrl = element.imagePath
+                  ? element.imagePath
+                  : element.backdropUrl;
+                return (
+                  <React.Fragment key={index}>
+                    <Card
+                      poster={posterUrl}
+                      title={element.title}
+                      duration={element.duration}
+                      id={element._id}
+                    />
+                  </React.Fragment>
+                );
+              })}
           </section>
         </section>
         <section className="series">
-          <h2>Nouvelles Séries</h2>
+          <h2>Top rated series</h2>
           <section className="content-container">
-            <div className="content">
-              <img src="/assets/images/Steel Town Murdereers.jpg" alt="" />
-              <p className="info">Steel Town Murdereers SS1</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Attack On Titan.jpg" alt="" />
-              <p className="info">Attack On Titan SS3</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Chimp Empire.jpg" alt="" />
-              <p className="info">Chimp Empire SS1 -EPS 12</p>
-            </div>
-            <div className="content">
-              <img
-                src="/assets/images/Demon Slayer Kimetsu no Yaiba.jpg"
-                alt=""
-              />
-              <p className="info">Demon Slayer Kimetsu no Yaiba</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/The last Thing he told me.jpg" alt="" />
-              <p className="info">The last Thing he told me SS1 - EPS 6</p>
-            </div>
-            <div className="content">
-              <img src="/assets/images/Nier automata.jpg" alt="" />
-              <p className="info">Nier automata</p>
-            </div>
+            {/* Sort and Slice the series Array by Release Date */}
+            {filteredSeries
+              .slice() // Create a shallow copy of the series array
+              .filter(
+                (series) =>
+                  new Date(series.releaseDate) <= currentDate &&
+                  new Date(series.releaseDate) > new Date("2023-01-01")
+              ) // Filter out series with release dates in the future
+              .sort((a, b) => b.score - a.score)
+              .slice(0, 12) // Get the 6 most recent series
+              .map((element, index) => {
+                const posterUrl = element.imagePath
+                  ? element.imagePath
+                  : element.backdropUrl;
+                return (
+                  <React.Fragment key={index}>
+                    <Card
+                      poster={posterUrl}
+                      title={element.title}
+                      seasons={element.seasons}
+                      id={element._id}
+                    />
+                  </React.Fragment>
+                );
+              })}
           </section>
         </section>
       </section>
