@@ -11,8 +11,8 @@ export default function MovieDetails({ pageType }) {
   const [movie, setMovie] = useState(null);
   const [series, setSeries] = useState(null);
   const [backArrow, setBackArrow] = useState(false);
-  const urlMovie = `http://localhost:3030/movies/${id}`;
-  const urlSeries = `http://localhost:3030/series/${id}`;
+  const urlMovie = `https://easy-puce-coati-tam.cyclic.cloud/movies/${id}`;
+  const urlSeries = `https://easy-puce-coati-tam.cyclic.cloud/series/${id}`;
   const currentPageFromState = location.state?.currentPage || 1;
   console.log(
     "this is the current page in movieDetails: ",
