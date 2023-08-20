@@ -11,8 +11,8 @@ import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 export default function Home() {
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
-  const urlMovies = "http://localhost:3030/movies";
-  const urlSeries = "http://localhost:3030/series";
+  const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
+  const urlSeries = "https://easy-puce-coati-tam.cyclic.cloud/series";
 
   useEffect(() => {
     const fetchMovies = async () => {

@@ -15,7 +15,7 @@ export default function Movies() {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(currentPageFromState || 1); // Initialize currentPage from state, default to 1
   const moviesPerPage = 24; // Number of movies to show per page
-  const urlMovies = "http://localhost:3030/movies";
+  const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
   const { selectedCategory } = useCategory();
 
   useEffect(() => {
