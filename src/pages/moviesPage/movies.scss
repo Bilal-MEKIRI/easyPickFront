@@ -122,7 +122,7 @@
         .main{
             max-width: 100%;
             .trending, .movies, .series{
-                width: 65%;
+                width: 95%;
                 h2{
                     padding-left: 15px;
                 }
@@ -136,7 +136,7 @@
         .main{
             max-width: 100%;
             .trending, .movies, .series{
-                width: 70%;
+                width: 90%;
                 h2{
                     padding-left: 15px;
                 }
@@ -146,7 +146,7 @@
             }
         }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 615px) {
         .main{
             max-width: 100%;
             .intro{
@@ -156,17 +156,13 @@
                     margin-left: auto;
                     margin-right: auto;
                     text-align: center;
-                    font-size: 1.5rem;
                 }
                 .search-bar{
                     width: 80%;
                 }
             }
             .trending, .movies, .series{
-                width: 80%;
-                h2{
-                    font-size: 1.5rem;
-                }
+                width: 95%;
             }
         }
     }
@@ -178,7 +174,6 @@
                 width: 100%;
                 .title{
                     width: 80%;
-                    font-size: 1.4rem;
                     text-align: center;
                 }
                 .search-bar{
@@ -192,7 +187,6 @@
                 align-items: center;
                 flex-direction: column;
                 h2{
-                    font-size: 1.4rem;
                     padding: 0;
                 }
             }
@@ -205,7 +199,6 @@
                 width: 100%;
                 .title{
                     width: 80%;
-                    font-size: 1.4rem;
                     text-align: center;
                 }
                 .search-bar{
@@ -213,14 +206,68 @@
                 }
             }
             .trending, .movies, .series{
-                width: 85%;
+                width: 95%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
                 h2{
-                    font-size: 1.4rem;
                     padding: 0;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 400px) {
+        .main{
+            max-width: 100%;
+            .intro{
+                width: 100%;
+                .title{
+                    width: 80%;
+                    text-align: center;
+                }
+                .search-bar{
+                    width: 80%;
+                }
+            }
+            .trending, .movies, .series{
+                width: 95%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                h2{
+                    padding: 0;
+                    width: 90%;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    @media (max-width: 350px) {
+        .main{
+            max-width: 100%;
+            .intro{
+                width: 100%;
+                .title{
+                    width: 80%;
+                    text-align: center;
+                }
+                .search-bar{
+                    width: 80%;
+                }
+            }
+            .trending, .movies, .series{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                h2{
+                    padding: 0;
+                    width: 90%;
+                    text-align: center;
                 }
             }
         }
