@@ -15,7 +15,8 @@ export default function Movies() {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(currentPageFromState || 1); // Initialize currentPage from state, default to 1
   const moviesPerPage = 24; // Number of movies to show per page
-  const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
+  // const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
+  const urlMovies = "http://localhost:3030/movies";
   const { selectedCategory } = useCategory();
 
   useEffect(() => {
@@ -111,7 +112,7 @@ export default function Movies() {
       <ScrollToTopBtn />
       <section className="main">
         <section className="intro">
-          <h1 className="title">Trouvez votre film préférée</h1>
+          <h1 className="title">Discover your next favorite movie!</h1>
           <div className="search-bar">
             <img
               className="search-icon"

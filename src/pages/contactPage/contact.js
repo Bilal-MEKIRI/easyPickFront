@@ -10,6 +10,7 @@ export default function Contact() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [formStatus, setFormStatus] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,21 +20,20 @@ export default function Contact() {
       const sanitizedEmail = DOMPurify.sanitize(email);
       const sanitizedMessage = DOMPurify.sanitize(message);
 
-      const response = await axios.post(
-        "https://easy-puce-coati-tam.cyclic.cloud/emails",
-        {
-          firstName: sanitizedFirstName,
-          lastName: sanitizedLastName,
-          email: sanitizedEmail,
-          message: sanitizedMessage,
-        }
-      );
+      const response = await axios.post("http://localhost:3030/emails", {
+        firstName: sanitizedFirstName,
+        lastName: sanitizedLastName,
+        email: sanitizedEmail,
+        message: sanitizedMessage,
+      });
 
       if (response.status === 200) {
         // Email successfully posted
+        setFormStatus("Email sent successfully!");
         console.log("Email sent successfully!");
       } else {
         // Handling error cases
+        setFormStatus("Error sending email");
         console.error("Error sending email: ", response.statusText);
       }
     } catch (error) {
@@ -47,7 +47,7 @@ export default function Contact() {
       <section className="contact-form-container">
         <div className="main-grid" id="paiment">
           <form onSubmit={handleSubmit}>
-            <label htmlFor="lastName">Nom</label>
+            <label htmlFor="lastName">Last Name</label>
             <input
               required
               type="text"
@@ -55,8 +55,7 @@ export default function Contact() {
               id="lastName"
               onChange={(event) => setLastName(event.target.value)}
             ></input>
-            <br />
-            <label htmlFor="firstName">Prénom</label>
+            <label htmlFor="firstName">First Name</label>
             <input
               required
               type="text"
@@ -64,7 +63,6 @@ export default function Contact() {
               id="firstName"
               onChange={(event) => setFirstName(event.target.value)}
             ></input>
-            <br />
             <label htmlFor="email">Email</label>
             <input
               required
@@ -73,7 +71,6 @@ export default function Contact() {
               id="email"
               onChange={(event) => setEmail(event.target.value)}
             ></input>
-            <br />
             <label htmlFor="message">Message</label>
             <textarea
               name="message"
@@ -83,7 +80,8 @@ export default function Contact() {
               onChange={(event) => setMessage(event.target.value)}
             ></textarea>
 
-            <button className="btn">Envoyer</button>
+            <button className="btn">Send</button>
+            {formStatus && <p>{formStatus}</p>}
           </form>
         </div>
       </section>

@@ -94,20 +94,18 @@ export default function Template() {
               <li>
                 <Link
                   to="/"
-                  className={`link ${
-                    activeNavItem === "Accueil" ? "active" : ""
-                  }`}
+                  className={`link ${activeNavItem === "Home" ? "active" : ""}`}
                   onClick={() => {
-                    handleNavItemClick("Accueil");
+                    handleNavItemClick("Home");
                   }}
                 >
-                  Accueil
+                  Home
                 </Link>
               </li>
               <li
                 onClick={toggleCategories} // Show Categories on hover
               >
-                Catégorie {displayCategories && <Categories />}{" "}
+                Categories {displayCategories && <Categories />}{" "}
                 {/* Show Categories component */}
               </li>
               <li>
@@ -115,13 +113,13 @@ export default function Template() {
                   to="/series"
                   state={{ currentPage: currentPage }}
                   className={`link ${
-                    activeNavItem === "Séries" ? "active" : ""
+                    activeNavItem === "Series" ? "active" : ""
                   }`}
                   onClick={() => {
-                    handleNavItemClick("Séries");
+                    handleNavItemClick("Series");
                   }}
                 >
-                  Séries
+                  Series
                 </Link>
               </li>
               <li>
@@ -129,13 +127,13 @@ export default function Template() {
                   to="/movies"
                   state={{ currentPage: 1 }}
                   className={`link ${
-                    activeNavItem === "Films" ? "active" : ""
+                    activeNavItem === "Movies" ? "active" : ""
                   }`}
                   onClick={() => {
-                    handleNavItemClick("Films");
+                    handleNavItemClick("Movies");
                   }}
                 >
-                  Films
+                  Movies
                 </Link>
               </li>
             </ul>
@@ -155,8 +153,8 @@ export default function Template() {
         <section className="footer1">
           <div className="info-responsive">
             <div className="info">
-              <Link className="link">Conditions d'utilisation</Link>
-              <Link className="link">Politique de confidentialité</Link>
+              <Link className="link">Terms of Use</Link>
+              <Link className="link">Privacy Policy</Link>
             </div>
             <div className="info">
               <Link to="contact" className="link">
