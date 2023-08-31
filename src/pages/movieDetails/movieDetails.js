@@ -11,10 +11,10 @@ export default function MovieDetails({ pageType }) {
   const [movie, setMovie] = useState(null);
   const [series, setSeries] = useState(null);
   const [backArrow, setBackArrow] = useState(false);
-  // const urlMovie = `https://easy-puce-coati-tam.cyclic.cloud/movies/${id}`;
-  // const urlSeries = `https://easy-puce-coati-tam.cyclic.cloud/series/${id}`;
-  const urlMovie = `http://localhost:3030/movies/${id}`;
-  const urlSeries = `http://localhost:3030/series/${id}`;
+  const urlMovie = `https://easy-puce-coati-tam.cyclic.cloud/movies/${id}`;
+  const urlSeries = `https://easy-puce-coati-tam.cyclic.cloud/series/${id}`;
+  // const urlMovie = `http://localhost:3030/movies/${id}`;
+  // const urlSeries = `http://localhost:3030/series/${id}`;
   const currentPageFromState = location.state?.currentPage || 1;
   console.log(
     "this is the current page in movieDetails: ",
@@ -85,11 +85,11 @@ export default function MovieDetails({ pageType }) {
               />
               <div className="movie-details">
                 <p className="details">
-                  <span className="detail-title">Description:</span>
+                  <span className="detail-title">Déscription:</span>
                   {movie.description}
                 </p>
                 <p className="details">
-                  <span className="detail-title">Duration:</span>
+                  <span className="detail-title">Durée:</span>
                   {movie.duration + "min"}
                 </p>
                 <p className="details">
@@ -97,7 +97,7 @@ export default function MovieDetails({ pageType }) {
                   {movie.score}
                 </p>
                 <p className="details">
-                  <span className="detail-title">Popularity:</span>
+                  <span className="detail-title">Popularité:</span>
                   {movie.popularity}
                 </p>
                 <p className="details">
@@ -105,7 +105,7 @@ export default function MovieDetails({ pageType }) {
                   {movie.genre}
                 </p>
                 <p className="details">
-                  <span className="detail-title">Release date:</span>
+                  <span className="detail-title">Date de sortie:</span>
                   {movie.releaseDate.slice(0, 10)}
                 </p>
                 {movie.trailer.length > 0 && (
@@ -113,7 +113,7 @@ export default function MovieDetails({ pageType }) {
                     to={movie.trailer[0].url}
                     className="trailer-youtube-link"
                   >
-                    <button className="watch-trailer">Trailer</button>
+                    <button className="watch-trailer">Bande annonce</button>
                   </Link>
                 )}
               </div>
@@ -133,7 +133,7 @@ export default function MovieDetails({ pageType }) {
               <div className="movie-details">
                 {series.description && (
                   <p className="details">
-                    <span className="detail-title">Description:</span>
+                    <span className="detail-title">Déscription:</span>
                     {series.description}
                   </p>
                 )}

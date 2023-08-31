@@ -129,7 +129,8 @@
             width: 150px;
             height: 200px;
             margin: auto;
-            margin-bottom: 4px;
+            padding: 2px;
+            padding-bottom: 40px;
             .poster-image{
                 width: 100%;
                 object-fit: fill;
@@ -139,7 +140,11 @@
                 width: 95%;
                 padding: 3px;
                 margin-top: 2px;
-                margin-bottom: 7px;
+                margin-bottom: 25px;
             }
         }
     }
+
+
+
+
