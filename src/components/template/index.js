@@ -5,17 +5,13 @@ import "./index.scss";
 import Categories from "../categories/categories";
 import ResponsiveMenu from "../responsiveMenu/responsiveMenu";
 import { Link, Outlet } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 export default function Template() {
   const [displayCategories, setDisplayCategories] = useState(false); // State for displaying Categories component
   const [activeNavItem, setActiveNavItem] = useState(""); // State for active navigation item
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const location = useLocation();
-  const [currentPage, setCurrentPage] = useState(
-    location.state?.currentPage || 1
-  );
 
   // Function to toggle Categories component visibility
   const toggleCategories = () => {
@@ -30,9 +26,6 @@ export default function Template() {
    */
   const handleNavItemClick = (navItem) => {
     setActiveNavItem(navItem);
-    if (navItem === "Films") {
-      setCurrentPage(1); // Reset currentPage to 1 when navigating to the Movies page
-    }
   };
 
   const handleBurgerMenuClick = () => {
@@ -62,7 +55,7 @@ export default function Template() {
   }, []);
 
   return (
-    <>
+    <div className="template-container">
       <header>
         <section className="header">
           <div id="logo">
@@ -71,6 +64,9 @@ export default function Template() {
                 id="logo-header"
                 src="/assets/images/logo.png"
                 alt="logo du site internet"
+                onClick={() => {
+                  handleNavItemClick("Accueil");
+                }}
               />
             </Link>
           </div>
@@ -79,61 +75,71 @@ export default function Template() {
             id="login-btn-responsive"
             onClick={() => handleBurgerMenuClick(burgerMenuActive)}
           >
-            <img src="/assets/icons/burger_menu.png" alt="login icon"></img>
+            {!burgerMenuActive && (
+              <img
+                src="/assets/icons/burger_menu.png"
+                alt="burger menu icon"
+              ></img>
+            )}
+            {burgerMenuActive && (
+              <img
+                className="burger_menu_close"
+                src="/assets/icons/burger_menu_close.png"
+                alt="burger menu icon"
+              ></img>
+            )}
           </Link>
-          {burgerMenuActive && (
-            <ResponsiveMenu
-              burgerMenuActive={burgerMenuActive}
-              handleBurgerMenuClick={
-                isSmallScreen ? handleBurgerMenuClick : null
-              }
-            />
-          )}
+          <ResponsiveMenu
+            burgerMenuActive={burgerMenuActive}
+            handleBurgerMenuClick={isSmallScreen ? handleBurgerMenuClick : null}
+          />
           <nav id="nav-bar">
             <ul>
               <li>
                 <Link
                   to="/"
-                  className={`link ${activeNavItem === "Home" ? "active" : ""}`}
+                  className={`link ${
+                    activeNavItem === "Accueil" ? "active" : ""
+                  }`}
                   onClick={() => {
-                    handleNavItemClick("Home");
+                    handleNavItemClick("Accueil");
                   }}
                 >
-                  Home
+                  Accueil
                 </Link>
               </li>
               <li
                 onClick={toggleCategories} // Show Categories on hover
               >
-                Categories {displayCategories && <Categories />}{" "}
+                Catégories {displayCategories && <Categories />}{" "}
                 {/* Show Categories component */}
               </li>
               <li>
                 <Link
                   to="/series"
-                  state={{ currentPage: currentPage }}
+                  // state={{ currentPage: currentPage }}
                   className={`link ${
-                    activeNavItem === "Series" ? "active" : ""
+                    activeNavItem === "Séries" ? "active" : ""
                   }`}
                   onClick={() => {
-                    handleNavItemClick("Series");
+                    handleNavItemClick("Séries");
                   }}
                 >
-                  Series
+                  Séries
                 </Link>
               </li>
               <li>
                 <Link
                   to="/movies"
-                  state={{ currentPage: 1 }}
+                  // state={{ currentPage: 1 }}
                   className={`link ${
-                    activeNavItem === "Movies" ? "active" : ""
+                    activeNavItem === "Films" ? "active" : ""
                   }`}
                   onClick={() => {
-                    handleNavItemClick("Movies");
+                    handleNavItemClick("Films");
                   }}
                 >
-                  Movies
+                  Films
                 </Link>
               </li>
             </ul>
@@ -153,14 +159,18 @@ export default function Template() {
         <section className="footer1">
           <div className="info-responsive">
             <div className="info">
-              <Link className="link">Terms of Use</Link>
-              <Link className="link">Privacy Policy</Link>
+              <Link to="/terms" className="link">
+                Conditions d'utilisation
+              </Link>
+              <Link to="/privacy" className="link">
+                Politique de confidentialité
+              </Link>
             </div>
             <div className="info">
               <Link to="contact" className="link">
                 Contact
               </Link>
-              <Link className="link">Site map</Link>
+              {/* <Link className="link">Site map</Link> */}
             </div>
           </div>
           <div className="social">
@@ -184,11 +194,14 @@ export default function Template() {
               id="logo-footer"
               src="/assets/images/logo.png"
               alt="logo du site"
+              onClick={() => {
+                handleNavItemClick("Home");
+              }}
             />
           </Link>
           <div>© easyPick 2023</div>
         </section>
       </footer>
-    </>
+    </div>
   );
 }

@@ -6,8 +6,9 @@ import Template from "./components/template";
 import Contact from "./pages/contactPage/contact";
 import Movies from "./pages/moviesPage/movies";
 import Series from "./pages/seriesPage/series";
-import Login from "./pages/loginPage/login";
 import MovieDetails from "./pages/movieDetails/movieDetails.js";
+import Privacy from "./components/privacyPolicy/privacyPolicy.js";
+import Terms from "./components/termsOfUse/termsOfUse";
 
 function App() {
   return (
@@ -18,7 +19,6 @@ function App() {
           <Route path="/movies" element={<Movies />}></Route>
           <Route path="/series" element={<Series />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
-          <Route path="/login" element={<Login />}></Route>
           <Route path="/:id" element={<MovieDetails pageType="home" />}></Route>
           <Route
             path="/movies/:id"
@@ -28,6 +28,8 @@ function App() {
             path="/series/:id"
             element={<MovieDetails pageType="series" />}
           ></Route>
+          <Route path="/privacy" element={<Privacy />}></Route>
+          <Route path="/terms" element={<Terms />}></Route>
         </Route>
       </Routes>
     </CategoryProvider>

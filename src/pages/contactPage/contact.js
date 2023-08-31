@@ -20,12 +20,15 @@ export default function Contact() {
       const sanitizedEmail = DOMPurify.sanitize(email);
       const sanitizedMessage = DOMPurify.sanitize(message);
 
-      const response = await axios.post("http://localhost:3030/emails", {
-        firstName: sanitizedFirstName,
-        lastName: sanitizedLastName,
-        email: sanitizedEmail,
-        message: sanitizedMessage,
-      });
+      const response = await axios.post(
+        "https://easy-puce-coati-tam.cyclic.cloud/emails",
+        {
+          firstName: sanitizedFirstName,
+          lastName: sanitizedLastName,
+          email: sanitizedEmail,
+          message: sanitizedMessage,
+        }
+      );
 
       if (response.status === 200) {
         // Email successfully posted
@@ -53,6 +56,7 @@ export default function Contact() {
               type="text"
               name="lastName"
               id="lastName"
+              placeholder="Last Name"
               onChange={(event) => setLastName(event.target.value)}
             ></input>
             <label htmlFor="firstName">First Name</label>
@@ -61,6 +65,7 @@ export default function Contact() {
               type="text"
               name="firstName"
               id="firstName"
+              placeholder="First Name"
               onChange={(event) => setFirstName(event.target.value)}
             ></input>
             <label htmlFor="email">Email</label>
@@ -69,6 +74,7 @@ export default function Contact() {
               type="text"
               name="email"
               id="email"
+              placeholder="Email"
               onChange={(event) => setEmail(event.target.value)}
             ></input>
             <label htmlFor="message">Message</label>
@@ -77,6 +83,7 @@ export default function Contact() {
               id="message"
               cols="30"
               rows="10"
+              placeholder="Your Message"
               onChange={(event) => setMessage(event.target.value)}
             ></textarea>
 

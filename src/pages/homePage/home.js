@@ -5,17 +5,16 @@ import DOMPurify from "dompurify";
 import { useState, useEffect } from "react";
 import "../../components/resetCSS/reset.scss";
 import "./home.scss";
-import Slider from "../../components/autoSlider/slider.js";
 import Card from "../../components/contentCard/contentCard.js";
 import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
-  // const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
-  // const urlSeries = "https://easy-puce-coati-tam.cyclic.cloud/series";
-  const urlMovies = "http://localhost:3030/movies";
-  const urlSeries = "http://localhost:3030/series";
+  const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
+  const urlSeries = "https://easy-puce-coati-tam.cyclic.cloud/series";
+  // const urlMovies = "http://localhost:3030/movies";
+  // const urlSeries = "http://localhost:3030/series";
 
   const { selectedCategory } = useCategory();
 
@@ -97,7 +96,10 @@ export default function Home() {
       <ScrollToTopBtn />
       <section className="main">
         <section className="intro">
-          <h1 className="title">Find movies & series that match your vibe!</h1>
+          <h1 className="title">
+            Trouvez des films & séries adaptées à vos goûts
+          </h1>
+          {/* <h1 className="title">Find movies & series that match your vibe!</h1> */}
           <div className="search-bar">
             <img
               className="search-icon"
@@ -119,7 +121,7 @@ export default function Home() {
           <Slider />
         </div> */}
         <section className="trending">
-          <h2>Popular movies and series</h2>
+          <h2>Séries et films populaires</h2>
           <section className="content-container">
             {/* Sort and Slice the movies Array */}
             {filteredMovies
@@ -174,7 +176,7 @@ export default function Home() {
           </section>
         </section>
         <section className="movies">
-          <h2>Top rated movies</h2>
+          <h2>Films les mieux notés</h2>
           <section className="content-container">
             {/* Sort and Slice the movies Array by Release Date */}
             {filteredMovies
@@ -204,7 +206,7 @@ export default function Home() {
           </section>
         </section>
         <section className="series">
-          <h2>Top rated series</h2>
+          <h2>Séries les mieux notés</h2>
           <section className="content-container">
             {/* Sort and Slice the series Array by Release Date */}
             {filteredSeries

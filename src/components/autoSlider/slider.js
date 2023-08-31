@@ -7,45 +7,29 @@ export default function Slider() {
   const slides = [
     {
       id: "first-slide",
-      content: (
-        <img
-          src="/assets/images/demon-slayer-trailer.jpg"
-          alt="demon slayer "
-        />
-      ),
+      content: <img src="/assets/images/jujutsu.jpg" alt="Jujutsu kaisen " />,
     },
     {
       id: "second-slide",
       content: (
-        <img src="/assets/images/Bird-Box-trailer.jpg" alt="Bird box " />
+        <img src="/assets/images/attackontitan.jpg" alt="Attack on titan " />
       ),
     },
     {
       id: "third-slide",
-      content: (
-        <img src="/assets/images/John-Wick-trailer.jpg" alt="John-Wick" />
-      ),
+      content: <img src="/assets/images/chainsawman.jpg" alt="Chainsaw man " />,
     },
     {
       id: "fourth-slide",
-      content: (
-        <img src="/assets/images/nike-air-movie-trailer.jpg" alt="Air movie" />
-      ),
+      content: <img src="/assets/images/demonslayer.jpg" alt="demon slayer " />,
     },
     {
       id: "fifth-slide",
-      content: (
-        <img
-          src="/assets/images/spider-man-no-way-home-trailer.jpg"
-          alt="Air movie"
-        />
-      ),
+      content: <img src="/assets/images/mobpsyco.jpg" alt="Mob psyco" />,
     },
     {
       id: "fifth-slide",
-      content: (
-        <img src="/assets/images/the-last-of-us-trailer.jpg" alt="Air movie" />
-      ),
+      content: <img src="/assets/images/onepunchman.jpg" alt="One punch man" />,
     },
   ];
 

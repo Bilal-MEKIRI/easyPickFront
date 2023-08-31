@@ -15,7 +15,7 @@ export default function ResponsiveMenu({
     setDisplayCategories(!displayCategories);
   };
   return (
-    <div className="responsive-menu">
+    <div className={`responsive-menu ${burgerMenuActive ? "active" : ""}`}>
       <ul className="menu-items">
         <li className="item">
           <Link
@@ -36,7 +36,7 @@ export default function ResponsiveMenu({
             toggleCategories();
           }} // Show Categories on hover
         >
-          Catégorie{" "}
+          Catégories
           {displayCategories && (
             <Categories handleBurgerMenuClick={handleBurgerMenuClick} />
           )}
