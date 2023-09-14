@@ -1,30 +1,20 @@
 import "./categories.scss";
 import React from "react";
-import { useCategory } from "../../categoryContext";
+import { useSeriesCategory } from "../../categoryContext";
 
-export default function Categories({
-  onSelectCategory,
-  burgerMenuActive,
-  handleBurgerMenuClick,
-}) {
-  const { setSelectedCategory } = useCategory();
+export default function SeriesCategories({ handleCategoryBtnClick }) {
+  const { setSelectedCategory } = useSeriesCategory();
   const categories = [
     "Action",
-    "Aventure",
     "Animation",
     "Comédie",
     "Crime",
     "Documentaire",
     "Drame",
-    "Family",
     "Fantastique",
-    "Histoire",
-    "Horreur",
-    "Musique",
+    "Familial",
     "Mystère",
     "Romance",
-    "Thriller",
-    "Guerre",
     "Western",
     "Kids",
     "News",
@@ -37,6 +27,7 @@ export default function Categories({
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+    handleCategoryBtnClick();
   };
   return (
     <div className="catetgories-container">
@@ -46,9 +37,6 @@ export default function Categories({
           className="category"
           onClick={() => {
             handleCategoryClick(category);
-            if (handleBurgerMenuClick) {
-              handleBurgerMenuClick(burgerMenuActive);
-            }
           }}
         >
           {category}

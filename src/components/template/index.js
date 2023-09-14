@@ -1,22 +1,17 @@
 // eslint-disable-next-line
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "../resetCSS/reset.scss";
 import "./index.scss";
-import Categories from "../categories/categories";
 import ResponsiveMenu from "../responsiveMenu/responsiveMenu";
 import { Link, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 // import { useLocation } from "react-router-dom";
 
 export default function Template() {
-  const [displayCategories, setDisplayCategories] = useState(false); // State for displaying Categories component
-  const [activeNavItem, setActiveNavItem] = useState(""); // State for active navigation item
+  const [activeNavItem, setActiveNavItem] = useState("Accueil"); // State for active navigation item
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-  // Function to toggle Categories component visibility
-  const toggleCategories = () => {
-    setDisplayCategories(!displayCategories);
-  };
+  const location = useLocation();
 
   /**
    * Callback function for handling navigation item clicks.
@@ -24,15 +19,28 @@ export default function Template() {
    *
    * @param {string} itemName - The name of the clicked navigation item.
    */
-  const handleNavItemClick = (navItem) => {
+
+  const handleNavItemClick = useCallback((navItem) => {
     setActiveNavItem(navItem);
-  };
+  }, []);
+
+  // specify dependencies here
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
   };
 
   useEffect(() => {
+    const currentPath = location.pathname;
+
+    if (currentPath === "/") {
+      handleNavItemClick("Accueil");
+    } else if (currentPath.includes("/series")) {
+      handleNavItemClick("Séries");
+    } else if (currentPath.includes("/movies")) {
+      handleNavItemClick("Films");
+    }
+
     const handleResize = () => {
       if (window.innerWidth <= 777) {
         // Adjust the width threshold as needed
@@ -52,7 +60,7 @@ export default function Template() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [handleNavItemClick, location.pathname]);
 
   return (
     <div className="template-container">
@@ -78,14 +86,14 @@ export default function Template() {
             {!burgerMenuActive && (
               <img
                 src="/assets/icons/burger_menu.png"
-                alt="burger menu icon"
+                alt="burger menu icone"
               ></img>
             )}
             {burgerMenuActive && (
               <img
                 className="burger_menu_close"
                 src="/assets/icons/burger_menu_close.png"
-                alt="burger menu icon"
+                alt="burger menu icone"
               ></img>
             )}
           </Link>
@@ -107,12 +115,6 @@ export default function Template() {
                 >
                   Accueil
                 </Link>
-              </li>
-              <li
-                onClick={toggleCategories} // Show Categories on hover
-              >
-                Catégories {displayCategories && <Categories />}{" "}
-                {/* Show Categories component */}
               </li>
               <li>
                 <Link
@@ -148,7 +150,7 @@ export default function Template() {
             Connexion
           </Link>
           <Link to="login" className="btn-responsive" id="login-btn-responsive">
-            <img src="/assets/icons/login.png" alt="login icon"></img>
+            <img src="/assets/icons/login.png" alt="login icone"></img>
           </Link>
         </section>
       </header>

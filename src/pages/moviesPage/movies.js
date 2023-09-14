@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
-import { useCategory } from "../../categoryContext";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useMovieCategory } from "../../categoryContext";
+import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import axios from "axios";
 import "../../components/resetCSS/reset.scss";
 import Card from "../../components/contentCard/contentCard.js";
 import "./movies.scss";
 import Pagination from "../../components/pagination/pagination";
 import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
-
+import MoviesCategories from "../../components/categories/moviesCategories";
 export default function Movies() {
   const location = useLocation(); // Use useLocation hook to access location state
   const { currentPage: currentPageFromState } = location.state || {}; // Destructure currentPage from state
@@ -17,7 +17,8 @@ export default function Movies() {
   const moviesPerPage = 24; // Number of movies to show per page
   const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
   // const urlMovies = "http://localhost:3030/movies";
-  const { selectedCategory } = useCategory();
+  const { selectedCategory } = useMovieCategory();
+  const [categoryBtn, setCategoryBtn] = useState(false);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -45,6 +46,11 @@ export default function Movies() {
     };
     fetchMovies();
   }, [selectedCategory]);
+
+  const handleCategoryBtnClick = async () => {
+    await setCategoryBtn(!categoryBtn);
+    await console.log("Is category btn clicked: ", categoryBtn);
+  };
 
   // Get the current date
   const currentDate = new Date();
@@ -113,7 +119,6 @@ export default function Movies() {
       <section className="main">
         <section className="intro">
           <h1 className="title">Trouvez votre film préférée</h1>
-          {/* <h1 className="title">Discover your next favorite movie!</h1> */}
           <div className="search-bar">
             <img
               className="search-icon"
@@ -129,6 +134,21 @@ export default function Movies() {
               value={searchQuery}
               onChange={handleSearchInputChange}
             ></input>
+          </div>
+          <div className="categories-container">
+            <Link
+              className="display-categories"
+              onClick={() => {
+                handleCategoryBtnClick();
+              }}
+            >
+              Catégories
+            </Link>
+            {categoryBtn && (
+              <MoviesCategories
+                handleCategoryBtnClick={handleCategoryBtnClick}
+              />
+            )}
           </div>
         </section>
         {!searchQuery && (
@@ -156,6 +176,7 @@ export default function Movies() {
                     title={element.title}
                     duration={element.duration}
                     id={element._id}
+                    slug={element.slug}
                     currentPage={currentPage} // Pass currentPage to Card component
                   />
                 </React.Fragment>

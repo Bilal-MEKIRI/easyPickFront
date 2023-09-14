@@ -6,15 +6,16 @@ import axios from "axios";
 import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 
 export default function MovieDetails({ pageType }) {
-  const { id } = useParams();
+  const { slug } = useParams();
+  console.log("Slug in MovieDetails: ", slug); // Log the slug value here
   const location = useLocation();
   const [movie, setMovie] = useState(null);
   const [series, setSeries] = useState(null);
   const [backArrow, setBackArrow] = useState(false);
-  const urlMovie = `https://easy-puce-coati-tam.cyclic.cloud/movies/${id}`;
-  const urlSeries = `https://easy-puce-coati-tam.cyclic.cloud/series/${id}`;
-  // const urlMovie = `http://localhost:3030/movies/${id}`;
-  // const urlSeries = `http://localhost:3030/series/${id}`;
+  const urlMovie = `https://easy-puce-coati-tam.cyclic.cloud/movies/slug/${slug}`;
+  const urlSeries = `https://easy-puce-coati-tam.cyclic.cloud/series/slug/${slug}`;
+  // const urlMovie = `http://localhost:3030/movies/slug/${slug}`;
+  // const urlSeries = `http://localhost:3030/series/slug/${slug}`;
   const currentPageFromState = location.state?.currentPage || 1;
   console.log(
     "this is the current page in movieDetails: ",
@@ -26,13 +27,17 @@ export default function MovieDetails({ pageType }) {
       try {
         if (pageType === "movies") {
           const { data } = await axios.get(urlMovie);
+          console.log("movie data: ", data);
           setMovie(data);
         } else if (pageType === "series") {
           const { data } = await axios.get(urlSeries);
+          console.log("series data: ", data);
           setSeries(data);
         } else if (pageType === "home") {
           const moviesResponse = await axios.get(urlMovie);
           const seriesResponse = await axios.get(urlSeries);
+          console.log("movie data: ", moviesResponse.data);
+          console.log("series data: ", seriesResponse.data);
           setMovie(moviesResponse.data);
           setSeries(seriesResponse.data);
         }
@@ -80,8 +85,8 @@ export default function MovieDetails({ pageType }) {
             <div className="movie-infos">
               <img
                 className="movie-poster"
-                src={movie.imagePath}
-                alt="Movie poster"
+                src={movie.imagePath ? movie.imagePath : movie.backdropUrl}
+                alt={`Poster du film ${movie.title}`}
               />
               <div className="movie-details">
                 <p className="details">
@@ -127,8 +132,8 @@ export default function MovieDetails({ pageType }) {
             <div className="movie-infos">
               <img
                 className="movie-poster"
-                src={series.imagePath}
-                alt="Movie poster"
+                src={series.imagePath ? series.imagePath : series.backdropUrl}
+                alt={`Poster de la série ${series.title}`}
               />
               <div className="movie-details">
                 {series.description && (

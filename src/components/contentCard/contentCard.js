@@ -6,6 +6,7 @@ export default function Card({
   id,
   poster,
   title,
+  slug,
   duration,
   seasons,
   currentPage,
@@ -15,16 +16,18 @@ export default function Card({
 
   const handleClick = () => {
     let url;
-
+    console.log("Slug: ", slug); // Log the slug value here
     // Determine the URL based on the current page type
     if (location.pathname === "/") {
-      url = `/${id}`;
+      url = `/${slug}`;
     } else {
       const isMovie = location.pathname.startsWith("/movies");
-      url = isMovie ? `/movies/${id}` : `/series/${id}`;
+      url = isMovie ? `/movies/${slug}` : `/series/${slug}`;
     }
 
-    navigate(url, { state: { currentPage } });
+    navigate(url, {
+      state: { currentPage },
+    });
   };
 
   return (
