@@ -32,8 +32,12 @@ export default function Contact() {
 
       if (response.status === 200) {
         // Email successfully posted
-        setFormStatus("Email sent successfully!");
+        setFormStatus("Votre message a bien été envoyé!");
         console.log("Email sent successfully!");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setMessage("");
       } else {
         // Handling error cases
         setFormStatus("Error sending email");
@@ -56,7 +60,8 @@ export default function Contact() {
               type="text"
               name="lastName"
               id="lastName"
-              placeholder="Last Name"
+              placeholder="Nom"
+              value={lastName}
               onChange={(event) => setLastName(event.target.value)}
             ></input>
             <label htmlFor="firstName">First Name</label>
@@ -65,7 +70,8 @@ export default function Contact() {
               type="text"
               name="firstName"
               id="firstName"
-              placeholder="First Name"
+              placeholder="Prénom"
+              value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
             ></input>
             <label htmlFor="email">Email</label>
@@ -75,6 +81,7 @@ export default function Contact() {
               name="email"
               id="email"
               placeholder="Email"
+              value={email}
               onChange={(event) => setEmail(event.target.value)}
             ></input>
             <label htmlFor="message">Message</label>
@@ -83,12 +90,13 @@ export default function Contact() {
               id="message"
               cols="30"
               rows="10"
-              placeholder="Your Message"
+              placeholder="Votre message"
+              value={message}
               onChange={(event) => setMessage(event.target.value)}
             ></textarea>
 
             <button className="btn">Send</button>
-            {formStatus && <p>{formStatus}</p>}
+            {formStatus && <p className="validation-message">{formStatus}</p>}
           </form>
         </div>
       </section>

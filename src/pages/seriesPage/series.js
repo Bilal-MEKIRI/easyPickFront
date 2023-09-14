@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import "../../components/resetCSS/reset.scss";
 import Card from "../../components/contentCard/contentCard.js";
 import Pagination from "../../components/pagination/pagination";
-import { useCategory } from "../../categoryContext";
+import { useSeriesCategory } from "../../categoryContext";
 import { useLocation } from "react-router-dom"; // Import useLocation
 import "./series.scss";
 import axios from "axios";
 import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
+import SeriesCategories from "../../components/categories/seriesCategories.js";
 
 export default function Series() {
   const location = useLocation(); // Use useLocation hook to access location state
@@ -17,7 +19,8 @@ export default function Series() {
   const seriesPerPage = 24; // Number of series to show per page
   const urlSeries = "https://easy-puce-coati-tam.cyclic.cloud/series";
   // const urlSeries = "http://localhost:3030/series";
-  const { selectedCategory } = useCategory();
+  const { selectedCategory } = useSeriesCategory();
+  const [categoryBtn, setCategoryBtn] = useState(false);
 
   useEffect(() => {
     const fetchSeries = async () => {
@@ -45,6 +48,10 @@ export default function Series() {
     };
     fetchSeries();
   }, [selectedCategory]);
+
+  const handleCategoryBtnClick = () => {
+    setCategoryBtn(!categoryBtn);
+  };
 
   // Get the current date
   const currentDate = new Date();
@@ -113,7 +120,6 @@ export default function Series() {
       <section className="main">
         <section className="intro">
           <h1 className="title">Trouvez votre série préférée</h1>
-          {/* <h1 className="title">Discover your next binge-worthy series!</h1> */}
           <div className="search-bar">
             <img
               className="search-icon"
@@ -129,6 +135,21 @@ export default function Series() {
               value={searchQuery}
               onChange={handleSearchInputChange}
             ></input>
+          </div>
+          <div className="categories-container">
+            <Link
+              className="display-categories"
+              onClick={() => {
+                handleCategoryBtnClick();
+              }}
+            >
+              Catégories
+            </Link>
+            {categoryBtn && (
+              <SeriesCategories
+                handleCategoryBtnClick={handleCategoryBtnClick}
+              />
+            )}
           </div>
         </section>
         {!searchQuery && (
@@ -157,6 +178,7 @@ export default function Series() {
                     title={element.title}
                     seasons={element.seasons}
                     id={element._id}
+                    slug={element.slug}
                     currentPage={currentPage} // Pass currentPage to Card component
                   />
                 </React.Fragment>

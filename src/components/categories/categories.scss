@@ -1,6 +1,6 @@
 .catetgories-container{
     position: absolute;
-    top: 100px;
+    top: 290px;
     left: 25%;
     z-index: 1;
     width: 50% !important;
@@ -33,50 +33,62 @@
 @media (max-width: 1050px){
     .catetgories-container{
         height: 300px !important;
-        .category{
-
-        }
     }
 }
 @media (max-width: 900px){
     .catetgories-container{
         height: 350px !important;
-        .category{
-
-        }
+        position: initial !important;
+        margin-top: 20px !important;
+        width: 90% !important;
     }
 }
 @media (max-width: 778px){
     .catetgories-container{
         height: 490px !important;
-        .category{
-            
-        }
+        position: initial !important;
+        margin-top: 20px !important;
+        width: 90% !important;
+
     }
 }
 @media (max-width: 740px){
     .catetgories-container{
         height: 490px !important;
-        .category{
-            
-        }
+        position: initial !important;
+        margin-top: 20px !important;
+        width: 90% !important;
     }
 }
 @media (max-width: 545px){
     .catetgories-container{
-        height: 950px !important;
-        width: 30% !important;
+        height: fit-content !important;
+        width: 95% !important;
+        position: initial !important;
+        margin-top: 20px !important;
+        flex-wrap: wrap !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+
         .category{
-            
+            margin-bottom: 35px !important;
+            margin-right: 25px !important;
         }
     }
 }
 @media (max-width: 490px){
     .catetgories-container{
-        height: 960px !important;
-        width: 30% !important;
+        height: fit-content !important;
+        width: 80% !important;
+        position: initial !important;
+        margin-top: 20px !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        flex-wrap: wrap !important;
         .category{
-            
+            margin-bottom: 30px !important;
+            margin-right: 25px !important;
+
         }
     }
 }
