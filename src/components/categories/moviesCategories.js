@@ -28,6 +28,7 @@ export default function MoviesCategories({ handleCategoryBtnClick }) {
     setSelectedCategory(category);
     handleCategoryBtnClick();
   };
+
   return (
     <div className="catetgories-container">
       {categories.map((category, index) => (

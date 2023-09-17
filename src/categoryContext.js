@@ -1,35 +1,3 @@
-// import React, { createContext, useContext, useState, useEffect } from "react";
-
-// const CategoryContext = createContext();
-
-// export function useCategory() {
-//   return useContext(CategoryContext);
-// }
-
-// export function CategoryProvider({ children }) {
-//   const [selectedCategory, setSelectedCategory] = useState(() => {
-//     return sessionStorage.getItem("selectedCategory") || null;
-//   });
-
-//   useEffect(() => {
-//     if (selectedCategory !== null) {
-//       sessionStorage.setItem("selectedCategory", selectedCategory);
-//       sessionStorage.setItem(
-//         "previous_selectedCategory",
-//         sessionStorage.getItem("selectedCategory")
-//       );
-//     } else {
-//       sessionStorage.removeItem("selectedCategory");
-//     }
-//   }, [selectedCategory]);
-
-//   return (
-//     <CategoryContext.Provider value={{ selectedCategory, setSelectedCategory }}>
-//       {children}
-//     </CategoryContext.Provider>
-//   );
-// }
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const MovieCategoryContext = createContext();
