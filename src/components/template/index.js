@@ -5,7 +5,6 @@ import "./index.scss";
 import ResponsiveMenu from "../responsiveMenu/responsiveMenu";
 import { Link, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
 
 export default function Template() {
   const [activeNavItem, setActiveNavItem] = useState("Accueil"); // State for active navigation item
@@ -13,18 +12,9 @@ export default function Template() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const location = useLocation();
 
-  /**
-   * Callback function for handling navigation item clicks.
-   * Updates the active navigation item state to reflect the clicked item.
-   *
-   * @param {string} itemName - The name of the clicked navigation item.
-   */
-
   const handleNavItemClick = useCallback((navItem) => {
     setActiveNavItem(navItem);
   }, []);
-
-  // specify dependencies here
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
@@ -133,7 +123,6 @@ export default function Template() {
               <li>
                 <Link
                   to="/movies"
-                  // state={{ currentPage: 1 }}
                   className={`link ${
                     activeNavItem === "Films" ? "active" : ""
                   }`}
@@ -146,12 +135,6 @@ export default function Template() {
               </li>
             </ul>
           </nav>
-          <Link to="login" className="btn" id="loginBtn">
-            Connexion
-          </Link>
-          <Link to="login" className="btn-responsive" id="login-btn-responsive">
-            <img src="/assets/icons/login.png" alt="login icone"></img>
-          </Link>
         </section>
       </header>
       <section>
@@ -172,22 +155,7 @@ export default function Template() {
               <Link to="contact" className="link">
                 Contact
               </Link>
-              {/* <Link className="link">Site map</Link> */}
             </div>
-          </div>
-          <div className="social">
-            <img
-              className="img"
-              id="facebook-logo"
-              src="/assets/icons/Facebook.png"
-              alt="facebook logo"
-            />
-            <img
-              className="img"
-              id="instagram-logo"
-              src="/assets/icons/Instagram.png"
-              alt="Instagram logo"
-            />
           </div>
         </section>
         <section className="footer2">

@@ -123,7 +123,7 @@ export default function Movies() {
             <img
               className="search-icon"
               src="/assets/icons/magnifiying-glass.png"
-              alt=""
+              alt="icone d'une loupe"
             />
             <input
               className="search-input"
