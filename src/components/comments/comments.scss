@@ -1,0 +1,130 @@
+ .comments-section{
+    width: 75%;
+    height: fit-content;
+    margin: 300px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .comment-form{
+        width: 80%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .input-send-btn-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            
+            .comment-label{
+            display: none;
+        }
+        .comment-textarea{
+            font-size: 1rem;
+            padding-top: 8px;
+            padding-left: 8px;
+            width: 70%;
+        }
+        .btn{
+            width: 10%;
+            width: 150px;
+            height: 50px;
+            text-align: center;
+            color: #00ff75;
+            font-family: "Raleway";
+            font-weight: 600;
+            font-size: 1.1rem;
+            background-color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: 0.3s;
+            &:hover{
+                transform: scale(1.05);
+                cursor: pointer;
+            }
+        }
+        }
+        
+
+        .validation-message{
+            width: 90%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 5px;
+            padding-right: 5px;
+            font-size: 1.2rem;
+            margin: 15px auto;
+            text-align: center;
+            &.success {
+                background-color: #00ff7770;
+              }
+            
+              &.error {
+                background-color: red;
+              }
+        }
+    }
+
+    .published-comment-container{
+        width: 80%;
+        height: fit-content;
+        margin-top: 40px;
+        margin-bottom: 25px;
+        background-color: #343434;
+        border-radius: 8px;
+        padding: 10px;
+
+        .comment-info{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            .user-email{
+                font-size: 1.1rem;
+            }
+            .published-at{
+                font-size: 1.1rem;
+                opacity: 0.8;
+            }
+        }
+
+        
+        
+        .published-comment{
+            line-height: 1.2;
+            font-size: 1.2rem;
+        }
+    }
+
+    @media (max-width: 930px) {
+
+        .comment-form{
+            width: 100%;
+            height: fit-content;
+            flex-direction: column;
+            align-items: center;
+            .input-send-btn-container{
+                flex-direction: column;
+                .comment-textarea{
+                font-size: 1rem;
+                padding-top: 8px;
+                padding-left: 8px;
+                width: 95%;
+                margin-bottom: 10px;
+            }
+            .btn{
+                margin-bottom: 15px;
+            }
+            }
+            
+        }
+
+        .published-comment-container{
+            width: 100%;
+        }
+    
+}
+ }

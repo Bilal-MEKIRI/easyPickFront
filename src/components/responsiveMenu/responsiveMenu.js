@@ -6,6 +6,10 @@ export default function ResponsiveMenu({
   burgerMenuActive,
   handleBurgerMenuClick,
 }) {
+  const isUserConnected = () => {
+    return !!localStorage.getItem("token");
+  };
+
   return (
     <div className={`responsive-menu ${burgerMenuActive ? "active" : ""}`}>
       <ul className="menu-items">
@@ -46,6 +50,19 @@ export default function ResponsiveMenu({
             }}
           >
             Films
+          </Link>
+        </li>
+        <li className="item">
+          <Link
+            to={isUserConnected() ? "/" : "login"}
+            className="link"
+            onClick={() => {
+              if (handleBurgerMenuClick) {
+                handleBurgerMenuClick(burgerMenuActive);
+              }
+            }}
+          >
+            {isUserConnected() ? "Connecté" : "Connexion"}
           </Link>
         </li>
       </ul>

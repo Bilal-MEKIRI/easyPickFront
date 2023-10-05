@@ -1,0 +1,165 @@
+.sign-in{
+    font-family: "Raleway";
+    .sign-in-form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: fit-content;
+        margin: 0 auto;
+        .title{
+            font-size: 1.5rem;
+            margin: 30px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .form{
+            width: 30%;
+            padding: 50px;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            margin-right: auto;
+            margin-left: auto;
+            border-radius: 20px;
+            color: white !important;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.764) !important;
+            label{
+                font-size: 1.2rem;
+                font-weight: normal;
+                display: none;
+            }
+            input{
+                margin-left: 15px;
+                height: 30px;
+                width: 220px;
+                padding-left: 8px;
+                margin: 15px;
+                font-size: 1.1rem;
+                outline: none !important;
+                background: none !important;
+                border-top: none !important;
+                border-left: none !important;
+                border-right: none !important;
+                color: white !important;
+                border-color: white !important;
+                &:focus{
+                    outline-color: #24ff00 !important;
+                    border-color: #24ff00 !important;
+                }
+                &::placeholder {  
+                    color: white !important;
+                }
+            }
+            
+            .btn{
+                width: 150px;
+                height: 50px;
+                margin: 20px;
+                margin-top: 40px;
+                text-align: center;
+                color: #2c2c2c;
+                font-family: "Raleway";
+                font-weight: 600;
+                font-size: 1.1rem;
+                background-color: rgb(255, 255, 255);
+                border: none;
+                border-radius: 10px;
+                text-decoration: none;
+                transition: 0.3s;
+                &:hover{
+                    transform: scale(1.05);
+                    cursor: pointer;
+                }
+            }
+            .validation-message{
+                width: 90%;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 1.2rem;
+                margin: 15px auto;
+                text-align: center;
+                &.success {
+                    background-color: #00ff7770;
+                  }
+                
+                  &.error {
+                    background-color: red;
+                  }
+            }
+        }
+        .create-account{
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            border-bottom: 1px solid white;
+            margin-top: 10px;
+            transition: all 0.4s;
+            &:hover{
+                color: #2c2c2c;
+                border-bottom: 1px solid #2c2c2c;
+            }
+        }
+    }
+    
+    
+    @media(max-width: 1400px){
+        .sign-in-form{
+            form{
+                margin: 0 auto !important;
+            }
+        }
+    }
+
+    @media(max-width: 1000px){
+        .sign-in-form{
+            form{
+                margin: 0 auto !important;
+                padding: 40px !important;
+                input{
+                    width: 90% !important;
+                }
+            }
+        }
+    }
+
+
+    @media(max-width: 700px){
+        .sign-in-form{
+            form{
+                margin: 0 auto !important;
+                padding: 20px !important;
+                width: 50% !important;
+                input{
+                    width: 90% !important;
+                }
+            }
+        }
+    }
+
+
+
+    @media(max-width: 500px){
+        .sign-in-form{
+            form{
+                margin: 0 auto !important;
+                width: 80% !important;
+                padding: 0 !important;
+                input{
+                    width: 70% !important;
+                }
+            }
+        }
+        .create-account{
+            margin-bottom: 20px;
+        }
+    }
+    
+
+}
+
