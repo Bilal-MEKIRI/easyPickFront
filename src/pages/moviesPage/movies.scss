@@ -41,35 +41,42 @@
                 margin-bottom: 50px;
             }
             .search-bar{
+                width: 45%;
                 display: flex;
                 align-items: center;
                 margin-bottom: 40px;
+                background-color: rgb(255, 255, 255);
+                border-radius: 20px; /* This will give the search-bar a rounded appearance */
+                overflow: hidden; /* This ensures inner contents respect the border-radius */
                 .search-icon{
                     width: 30px;
                     padding: 6.6px;
                     height: 30px;
-                    border-radius: 20px 0 0 20px;
-                    background-color: rgb(255, 255, 255);
                 }
                 .search-input{
-                background-color: rgb(255, 255, 255);
-                width: 400px;
-                height: 30px;
-                border: 2px solid white;
-                padding: 5px;
-                padding-left: 10px;
-                border-radius: 0 20px 20px 0;
-                outline: none;
-                font-size: 1.1rem;
+                    flex-grow: 1; /* This will make the input take up remaining space */
+                    border: none; /* Remove border */
+                    padding: 5px;
+                    padding-left: 10px; /* Make space for the search icon */
+                    background-color: transparent; /* Make input's background transparent */
+                    font-size: 1.1rem;
+                    outline: none;
                 &:focus{
-                    outline-color: white;
+                    box-shadow: 0 0 5px white; /* Adjust as desired */
                 }
             }
         }
             
         }
+        .spinner-container{
+            display: flex;
+            justify-content: center; // Horizontally center
+            align-items: center;     // Vertically center
+            height: 30vh;           // Take the full viewport height
+            width: 100%;             // Take the full width
+        }
     }
-    .trending, .movies, .series{
+    .movies{
         width: 1200px;
         margin: 0 auto;
         h2{
@@ -88,9 +95,6 @@
             margin: 0 auto;
         }
         
-    }
-    .series{
-        padding-bottom: 100px;
     }
 
     @media (max-width: 1232px) {

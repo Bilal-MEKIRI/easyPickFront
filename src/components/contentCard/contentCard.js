@@ -16,7 +16,7 @@ export default function Card({
 
   const handleClick = () => {
     let url;
-    console.log("Slug: ", slug); // Log the slug value here
+    console.log("Slug: ", slug); // Log the slug value
     // Determine the URL based on the current page type
     if (location.pathname === "/") {
       url = `/${slug}`;

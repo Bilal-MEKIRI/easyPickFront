@@ -10,6 +10,7 @@ export default function Template() {
   const [activeNavItem, setActiveNavItem] = useState("Accueil"); // State for active navigation item
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isUserConnected, setIsUserConnected] = useState(false);
   const location = useLocation();
 
   const handleNavItemClick = useCallback((navItem) => {
@@ -18,6 +19,16 @@ export default function Template() {
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
+  };
+
+  const isTokenValid = () => {
+    const token = localStorage.getItem("token");
+    const expiration = localStorage.getItem("token_expiration");
+
+    if (token && Date.now() < parseInt(expiration)) {
+      return true;
+    }
+    return false;
   };
 
   useEffect(() => {
@@ -46,11 +57,20 @@ export default function Template() {
     // Add event listener for window resize
     window.addEventListener("resize", handleResize);
 
+    // Check if the user is connected
+    if (isTokenValid()) {
+      setIsUserConnected(true);
+    } else {
+      setIsUserConnected(false);
+      localStorage.removeItem("token"); // Removing the expired token
+      localStorage.removeItem("token_expiration"); // Removing its associated expiration time
+    }
+
     // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [handleNavItemClick, location.pathname]);
+  }, [handleNavItemClick, location.pathname, isUserConnected]);
 
   return (
     <div className="template-container">
@@ -135,6 +155,17 @@ export default function Template() {
               </li>
             </ul>
           </nav>
+          {!isSmallScreen ? (
+            isUserConnected ? (
+              <span className="welcome-msg">Connexion réussie!</span>
+            ) : (
+              <Link to="/login" className="log-in-btn">
+                connexion
+              </Link>
+            )
+          ) : (
+            ""
+          )}
         </section>
       </header>
       <section>

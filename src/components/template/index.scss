@@ -24,7 +24,7 @@ header{
         }
     }
     nav{
-        width: 65%;
+        width: 35%;
         ul{
             display: flex;
             align-items: center;
@@ -49,8 +49,36 @@ header{
                     border-bottom: 3px solid #00ff75;
                 }
             }
+
         }
     }
+
+    .log-in-btn{
+        font-family: 'Raleway';
+        text-decoration: none;
+        width: 100px;
+        height: 25px;
+        text-align: center;
+        padding: 10px;
+        background-color: #00ff778d;
+        color: white;
+        border-radius: 10px;
+        font-size: 1.3rem;
+        font-weight: 500;
+        transition: all 0.3s;
+        &:hover{
+            cursor: pointer;
+            background-color: #00ff77d7;
+            transform: scale(1.03);
+        }
+    }
+
+    .welcome-msg{
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #00ff75;
+    }
+
     .btn-burger-menu{
         display: none;
         z-index: 1;

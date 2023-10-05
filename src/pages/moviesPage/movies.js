@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import { useMovieCategory } from "../../categoryContext";
 import { Link, useLocation } from "react-router-dom"; // Import useLocation
+import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import "../../components/resetCSS/reset.scss";
 import Card from "../../components/contentCard/contentCard.js";
@@ -9,6 +10,7 @@ import "./movies.scss";
 import Pagination from "../../components/pagination/pagination";
 import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
 import MoviesCategories from "../../components/categories/moviesCategories";
+
 export default function Movies() {
   const location = useLocation(); // Use useLocation hook to access location state
   const { currentPage: currentPageFromState } = location.state || {}; // Destructure currentPage from state
@@ -19,18 +21,27 @@ export default function Movies() {
   // const urlMovies = "http://localhost:3030/movies";
   const { selectedCategory } = useMovieCategory();
   const [categoryBtn, setCategoryBtn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const ONE_WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000; //Milliseconds in one week
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
+        setIsLoading(true); // Set loading to true when fetching begins
         let response;
         if (selectedCategory) {
           response = await axios.get(`${urlMovies}/genre/${selectedCategory}`);
         } else {
           // Check if movies are in localStorage before making API request
+          let lastFetched = Number(localStorage.getItem("moviesLastFetched"));
           const cachedMovies = localStorage.getItem("cachedMovies");
-          if (cachedMovies) {
+          if (
+            cachedMovies &&
+            lastFetched &&
+            Date.now() - lastFetched <= ONE_WEEK_IN_MS
+          ) {
             setMovies(JSON.parse(cachedMovies));
+            setIsLoading(false); // Data has been set, stop the loader
             return;
           }
           // Fetch movies from the server since they are not in localStorage
@@ -38,14 +49,18 @@ export default function Movies() {
 
           // Cache the movies in localStorage
           localStorage.setItem("cachedMovies", JSON.stringify(response.data));
+          localStorage.setItem("moviesLastFetched", Date.now().toString());
         }
+
         setMovies(response.data);
+        setIsLoading(false); // Data has been set, stop the loader
       } catch (error) {
         console.error(error);
+        setIsLoading(false); // Data has been set, stop the loader
       }
     };
     fetchMovies();
-  }, [selectedCategory]);
+  }, [selectedCategory, ONE_WEEK_IN_MS]);
 
   const handleCategoryBtnClick = async () => {
     await setCategoryBtn(!categoryBtn);
@@ -85,7 +100,6 @@ export default function Movies() {
       totalPages - maxPagesToShow + 1
     )
   );
-
   // Function to get movies for the current page
   const getCurrentPageMovies = () => {
     const startIndex = (currentPage - 1) * moviesPerPage;
@@ -151,49 +165,57 @@ export default function Movies() {
             )}
           </div>
         </section>
-        {!searchQuery && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            pagesRange={pagesRange}
-            startingPageNumber={startingPageNumber}
-            handlePageClick={handlePageClick}
-            handlePreviousPageClick={handlePreviousPageClick}
-            handleNextPageClick={handleNextPageClick}
-          />
-        )}
-        <section className="movies">
-          <h2>Films</h2>
-          <section className="content-container">
-            {getCurrentPageMovies().map((element, index) => {
-              const posterUrl = element.imagePath
-                ? element.imagePath
-                : element.backdropUrl;
-              return (
-                <React.Fragment key={index}>
-                  <Card
-                    poster={posterUrl}
-                    title={element.title}
-                    duration={element.duration}
-                    id={element._id}
-                    slug={element.slug}
-                    currentPage={currentPage} // Pass currentPage to Card component
-                  />
-                </React.Fragment>
-              );
-            })}
-          </section>
-        </section>
-        {!searchQuery && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            pagesRange={pagesRange}
-            startingPageNumber={startingPageNumber}
-            handlePageClick={handlePageClick}
-            handlePreviousPageClick={handlePreviousPageClick}
-            handleNextPageClick={handleNextPageClick}
-          />
+        {isLoading ? (
+          <div className="spinner-container">
+            <ClipLoader color={"#00ff75"} loading={isLoading} size={65} />
+          </div>
+        ) : (
+          <>
+            {!searchQuery && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pagesRange={pagesRange}
+                startingPageNumber={startingPageNumber}
+                handlePageClick={handlePageClick}
+                handlePreviousPageClick={handlePreviousPageClick}
+                handleNextPageClick={handleNextPageClick}
+              />
+            )}
+            <section className="movies">
+              <h2>Films</h2>
+              <section className="content-container">
+                {getCurrentPageMovies().map((element, index) => {
+                  const posterUrl = element.imagePath
+                    ? element.imagePath
+                    : element.backdropUrl;
+                  return (
+                    <React.Fragment key={index}>
+                      <Card
+                        poster={posterUrl}
+                        title={element.title}
+                        duration={element.duration}
+                        id={element._id}
+                        slug={element.slug}
+                        currentPage={currentPage} // Pass currentPage to Card component
+                      />
+                    </React.Fragment>
+                  );
+                })}
+              </section>
+            </section>
+            {!searchQuery && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pagesRange={pagesRange}
+                startingPageNumber={startingPageNumber}
+                handlePageClick={handlePageClick}
+                handlePreviousPageClick={handlePreviousPageClick}
+                handleNextPageClick={handleNextPageClick}
+              />
+            )}
+          </>
         )}
       </section>
     </main>

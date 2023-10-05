@@ -6,6 +6,7 @@ import Card from "../../components/contentCard/contentCard.js";
 import Pagination from "../../components/pagination/pagination";
 import { useSeriesCategory } from "../../categoryContext";
 import { useLocation } from "react-router-dom"; // Import useLocation
+import { ClipLoader } from "react-spinners";
 import "./series.scss";
 import axios from "axios";
 import ScrollToTopBtn from "../../components/scrollToTopBtn/scrollToTopBtn";
@@ -21,18 +22,27 @@ export default function Series() {
   // const urlSeries = "http://localhost:3030/series";
   const { selectedCategory } = useSeriesCategory();
   const [categoryBtn, setCategoryBtn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const ONE_WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000; //Milliseconds in one week
 
   useEffect(() => {
     const fetchSeries = async () => {
       try {
+        setIsLoading(true); // Set loading to true when fetching begins
         let response;
         if (selectedCategory) {
           response = await axios.get(`${urlSeries}/genre/${selectedCategory}`);
         } else {
           // Check if movies are in localStorage before making API request
+          let lastFetched = Number(localStorage.getItem("seriesLastFetched"));
           const cachedSeries = localStorage.getItem("cachedSeries");
-          if (cachedSeries) {
+          if (
+            cachedSeries &&
+            lastFetched &&
+            Date.now() - lastFetched <= ONE_WEEK_IN_MS
+          ) {
             setSeries(JSON.parse(cachedSeries));
+            setIsLoading(false); // Data has been set, stop the loader
             return;
           }
           // Fetch movies from the server since they are not in localStorage
@@ -40,14 +50,19 @@ export default function Series() {
 
           // Cache the movies in localStorage
           localStorage.setItem("cachedSeries", JSON.stringify(response.data));
+          localStorage.setItem("seriesLastFetched", Date.now().toString());
         }
+
         setSeries(response.data);
+        setIsLoading(false); // Data has been set, stop the loader
       } catch (error) {
         console.error(error);
+        setIsLoading(false); // Set loading to false when fetching ends
       }
     };
+
     fetchSeries();
-  }, [selectedCategory]);
+  }, [selectedCategory, ONE_WEEK_IN_MS]);
 
   const handleCategoryBtnClick = () => {
     setCategoryBtn(!categoryBtn);
@@ -152,50 +167,58 @@ export default function Series() {
             )}
           </div>
         </section>
-        {!searchQuery && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            pagesRange={pagesRange}
-            startingPageNumber={startingPageNumber}
-            handlePageClick={handlePageClick}
-            handlePreviousPageClick={handlePreviousPageClick}
-            handleNextPageClick={handleNextPageClick}
-          />
-        )}
-        <section className="series">
-          <h2>Séries</h2>
-          <section className="content-container">
-            {/* Sort and Slice the series Array */}
-            {getCurrentPageSeries().map((element, index) => {
-              const posterUrl = element.imagePath
-                ? element.imagePath
-                : element.backdropUrl;
-              return (
-                <React.Fragment key={index}>
-                  <Card
-                    poster={posterUrl}
-                    title={element.title}
-                    seasons={element.seasons}
-                    id={element._id}
-                    slug={element.slug}
-                    currentPage={currentPage} // Pass currentPage to Card component
-                  />
-                </React.Fragment>
-              );
-            })}
-          </section>
-        </section>
-        {!searchQuery && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            pagesRange={pagesRange}
-            startingPageNumber={startingPageNumber}
-            handlePageClick={handlePageClick}
-            handlePreviousPageClick={handlePreviousPageClick}
-            handleNextPageClick={handleNextPageClick}
-          />
+        {isLoading ? (
+          <div className="spinner-container">
+            <ClipLoader color={"#00ff75"} loading={isLoading} size={65} />
+          </div>
+        ) : (
+          <>
+            {!searchQuery && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pagesRange={pagesRange}
+                startingPageNumber={startingPageNumber}
+                handlePageClick={handlePageClick}
+                handlePreviousPageClick={handlePreviousPageClick}
+                handleNextPageClick={handleNextPageClick}
+              />
+            )}
+            <section className="series">
+              <h2>Séries</h2>
+              <section className="content-container">
+                {/* Sort and Slice the series Array */}
+                {getCurrentPageSeries().map((element, index) => {
+                  const posterUrl = element.imagePath
+                    ? element.imagePath
+                    : element.backdropUrl;
+                  return (
+                    <React.Fragment key={index}>
+                      <Card
+                        poster={posterUrl}
+                        title={element.title}
+                        seasons={element.seasons}
+                        id={element._id}
+                        slug={element.slug}
+                        currentPage={currentPage} // Pass currentPage to Card component
+                      />
+                    </React.Fragment>
+                  );
+                })}
+              </section>
+            </section>
+            {!searchQuery && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pagesRange={pagesRange}
+                startingPageNumber={startingPageNumber}
+                handlePageClick={handlePageClick}
+                handlePreviousPageClick={handlePreviousPageClick}
+                handleNextPageClick={handleNextPageClick}
+              />
+            )}
+          </>
         )}
       </section>
     </main>
