@@ -9,21 +9,16 @@ import Comments from "../../components/comments/comments.js";
 
 export default function MovieDetails({ pageType }) {
   const { slug } = useParams();
-  console.log("Slug in MovieDetails: ", slug); // Log the slug value here
   const location = useLocation();
+  const [backArrow, setBackArrow] = useState(false);
   const [movie, setMovie] = useState(null);
   const [series, setSeries] = useState(null);
-  const [backArrow, setBackArrow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const urlMovie = `https://easy-puce-coati-tam.cyclic.cloud/movies/slug/${slug}`;
   const urlSeries = `https://easy-puce-coati-tam.cyclic.cloud/series/slug/${slug}`;
   // const urlMovie = `http://localhost:3030/movies/slug/${slug}`;
   // const urlSeries = `http://localhost:3030/series/slug/${slug}`;
   const currentPageFromState = location.state?.currentPage || 1;
-  console.log(
-    "this is the current page in movieDetails: ",
-    currentPageFromState
-  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,19 +26,15 @@ export default function MovieDetails({ pageType }) {
         setIsLoading(true); // Set loading to true when fetching begins
         if (pageType === "movies") {
           const { data } = await axios.get(urlMovie);
-          console.log("movie data: ", data);
           setMovie(data);
           setIsLoading(false); // Data has been set, stop the loader
         } else if (pageType === "series") {
           const { data } = await axios.get(urlSeries);
-          console.log("series data: ", data);
           setSeries(data);
           setIsLoading(false); // Data has been set, stop the loader
         } else if (pageType === "home") {
           const moviesResponse = await axios.get(urlMovie);
           const seriesResponse = await axios.get(urlSeries);
-          console.log("movie data: ", moviesResponse.data);
-          console.log("series data: ", seriesResponse.data);
           setMovie(moviesResponse.data);
           setSeries(seriesResponse.data);
           setIsLoading(false); // Data has been set, stop the loader

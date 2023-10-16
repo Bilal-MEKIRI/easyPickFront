@@ -106,8 +106,11 @@ export default function Comments({ contentId }) {
       {commentsList.map((cmt) => (
         <div key={cmt._id} className="published-comment-container">
           <div className="comment-info">
-            <div className="user-email">
-              Utilisateur: {cmt.userEmail.split("@")[0]}
+            <div className="user-info">
+              <div className="user-icon">
+                {cmt.userName ? cmt.userName.charAt(0) : ""}
+              </div>
+              <div className="user-email">{cmt.userName}</div>
             </div>
             <div className="published-at">
               {new Date(cmt.createdAt).toLocaleDateString()}
