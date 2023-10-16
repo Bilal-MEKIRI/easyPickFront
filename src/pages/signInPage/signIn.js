@@ -7,6 +7,7 @@ import "../../components/resetCSS/reset.scss";
 import "./signIn.scss";
 
 export default function SignIn() {
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   // eslint-disable-next-line
   const [password, setPassword] = useState("");
@@ -21,6 +22,13 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true); // Set loading to true when sending begins
+
+    if (!userName) {
+      setFormStatus("Nom utilisateur requis.");
+      setFormStatusType("error");
+      setIsLoading(false);
+      return;
+    }
 
     if (!emailRegex.test(email)) {
       setFormStatus("Format d'email invalide.");
@@ -39,12 +47,14 @@ export default function SignIn() {
     }
 
     try {
+      const sanitizedUserName = DOMPurify.sanitize(userName);
       const sanitizedEmail = DOMPurify.sanitize(email);
       const sanitizedPassword = DOMPurify.sanitize(password);
 
       const response = await axios.post(
         "https://easy-puce-coati-tam.cyclic.cloud/users",
         {
+          userName: sanitizedUserName,
           email: sanitizedEmail,
           password: sanitizedPassword,
         }
@@ -78,6 +88,17 @@ export default function SignIn() {
       <section className="sign-in-form">
         <h1 className="title">Créez votre compte EasyPick</h1>
         <form className="form" onSubmit={handleSubmit}>
+          <label htmlFor="email">UserName</label>
+          <input
+            required
+            type="text"
+            name="userName"
+            id="userName"
+            value={userName}
+            placeholder="Nom Utilisateur"
+            onChange={(event) => setUserName(event.target.value)}
+          ></input>
+
           <label htmlFor="email">Email</label>
           <input
             required

@@ -5,6 +5,7 @@ import "./index.scss";
 import ResponsiveMenu from "../responsiveMenu/responsiveMenu";
 import { Link, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 export default function Template() {
   const [activeNavItem, setActiveNavItem] = useState("Accueil"); // State for active navigation item
@@ -12,6 +13,9 @@ export default function Template() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isUserConnected, setIsUserConnected] = useState(false);
   const location = useLocation();
+  // Decode the JWT token
+  const token = localStorage.getItem("token");
+  const decodedToken = token ? jwt_decode(token) : null;
 
   const handleNavItemClick = useCallback((navItem) => {
     setActiveNavItem(navItem);
@@ -157,7 +161,9 @@ export default function Template() {
           </nav>
           {!isSmallScreen ? (
             isUserConnected ? (
-              <span className="welcome-msg">Connexion réussie!</span>
+              <span className="welcome-msg">
+                {decodedToken ? `Bienvenue, ${decodedToken.userName}!` : ""}
+              </span>
             ) : (
               <Link to="/login" className="log-in-btn">
                 connexion
