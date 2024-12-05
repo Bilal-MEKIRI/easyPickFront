@@ -56,15 +56,12 @@ export default function Contact() {
       const sanitizedEmail = DOMPurify.sanitize(email);
       const sanitizedMessage = DOMPurify.sanitize(message);
 
-      const response = await axios.post(
-        "https://easy-puce-coati-tam.cyclic.cloud/emails",
-        {
-          firstName: sanitizedFirstName,
-          lastName: sanitizedLastName,
-          email: sanitizedEmail,
-          message: sanitizedMessage,
-        }
-      );
+      const response = await axios.post("http://localhost:3030/emails", {
+        firstName: sanitizedFirstName,
+        lastName: sanitizedLastName,
+        email: sanitizedEmail,
+        message: sanitizedMessage,
+      });
 
       if (response.status === 200) {
         // Email successfully posted
