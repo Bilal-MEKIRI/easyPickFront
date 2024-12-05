@@ -12,10 +12,10 @@ export default function Home() {
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const ONE_WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000; //Milliseconds in one week
-  const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
-  const urlSeries = "https://easy-puce-coati-tam.cyclic.cloud/series";
-  // const urlMovies = "http://localhost:3030/movies";
-  // const urlSeries = "http://localhost:3030/series";
+  // const urlMovies = "https://easy-puce-coati-tam.cyclic.cloud/movies";
+  // const urlSeries = "https://easy-puce-coati-tam.cyclic.cloud/series";
+  const urlMovies = "http://localhost:3030/movies";
+  const urlSeries = "http://localhost:3030/series";
 
   useEffect(() => {
     const fetchMovies = async () => {

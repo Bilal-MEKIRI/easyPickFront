@@ -53,14 +53,11 @@ export default function Login() {
       const sanitizedEmail = DOMPurify.sanitize(email);
       const sanitizedPassword = DOMPurify.sanitize(password);
 
-      const response = await axios.post(
-        "https://easy-puce-coati-tam.cyclic.cloud/users/check",
-        {
-          userName: sanitizedUserName,
-          email: sanitizedEmail,
-          password: sanitizedPassword,
-        }
-      );
+      const response = await axios.post("http://localhost:3030/users/check", {
+        userName: sanitizedUserName,
+        email: sanitizedEmail,
+        password: sanitizedPassword,
+      });
 
       setIsLoading(false); // Set loading to false after getting the response
 

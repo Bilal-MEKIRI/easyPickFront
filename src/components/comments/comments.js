@@ -15,7 +15,7 @@ export default function Comments({ contentId }) {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
-          `https://easy-puce-coati-tam.cyclic.cloud/comments/content/${contentId}`
+          `http://localhost:3030/comments/content/${contentId}`
         );
         setCommentsList(response.data);
       } catch (error) {
@@ -51,7 +51,7 @@ export default function Comments({ contentId }) {
 
     try {
       const response = await axios.post(
-        "https://easy-puce-coati-tam.cyclic.cloud/comments",
+        "http://localhost:3030/comments",
         { comment, contentId },
         {
           headers: {
