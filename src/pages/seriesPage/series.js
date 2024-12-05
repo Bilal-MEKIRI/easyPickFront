@@ -18,8 +18,8 @@ export default function Series() {
   const [series, setSeries] = useState([]);
   const [currentPage, setCurrentPage] = useState(currentPageFromState || 1); // Initialize currentPage from state, default to 1
   const seriesPerPage = 24; // Number of series to show per page
-  // const urlSeries = "https://easy-puce-coati-tam.cyclic.cloud/series";
-  const urlSeries = "http://localhost:3030/series";
+  const urlSeries = "easypickback-production.up.railway.app/series";
+  // const urlSeries = "http://localhost:3030/series";
   const { selectedCategory } = useSeriesCategory();
   const [categoryBtn, setCategoryBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

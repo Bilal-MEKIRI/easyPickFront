@@ -51,11 +51,14 @@ export default function SignIn() {
       const sanitizedEmail = DOMPurify.sanitize(email);
       const sanitizedPassword = DOMPurify.sanitize(password);
 
-      const response = await axios.post("http://localhost:3030/users", {
-        userName: sanitizedUserName,
-        email: sanitizedEmail,
-        password: sanitizedPassword,
-      });
+      const response = await axios.post(
+        "easypickback-production.up.railway.app/users",
+        {
+          userName: sanitizedUserName,
+          email: sanitizedEmail,
+          password: sanitizedPassword,
+        }
+      );
 
       if (response.status === 200) {
         // Account successfully posted

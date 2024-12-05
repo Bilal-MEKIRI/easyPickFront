@@ -14,10 +14,10 @@ export default function MovieDetails({ pageType }) {
   const [movie, setMovie] = useState(null);
   const [series, setSeries] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const urlMovie = `https://easy-puce-coati-tam.cyclic.cloud/movies/slug/${slug}`;
-  // const urlSeries = `https://easy-puce-coati-tam.cyclic.cloud/series/slug/${slug}`;
-  const urlMovie = `http://localhost:3030/movies/slug/${slug}`;
-  const urlSeries = `http://localhost:3030/series/slug/${slug}`;
+  const urlMovie = `easypickback-production.up.railway.app/movies/slug/${slug}`;
+  const urlSeries = `easypickback-production.up.railway.app/series/slug/${slug}`;
+  // const urlMovie = `http://localhost:3030/movies/slug/${slug}`;
+  // const urlSeries = `http://localhost:3030/series/slug/${slug}`;
   const currentPageFromState = location.state?.currentPage || 1;
 
   useEffect(() => {
