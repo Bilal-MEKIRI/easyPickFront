@@ -17,7 +17,7 @@ export default function Movies() {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(currentPageFromState || 1); // Initialize currentPage from state, default to 1
   const moviesPerPage = 24; // Number of movies to show per page
-  const urlMovies = "easypickback-production.up.railway.app/movies";
+  const urlMovies = "https://easypickback-production.up.railway.app/movies";
   // const urlMovies = "http://localhost:3030/movies";
   const { selectedCategory } = useMovieCategory();
   const [categoryBtn, setCategoryBtn] = useState(false);

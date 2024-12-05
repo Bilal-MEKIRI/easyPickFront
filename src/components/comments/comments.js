@@ -15,7 +15,7 @@ export default function Comments({ contentId }) {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
-          `easypickback-production.up.railway.app/comments/content/${contentId}`
+          `https://easypickback-production.up.railway.app/comments/content/${contentId}`
         );
         setCommentsList(response.data);
       } catch (error) {

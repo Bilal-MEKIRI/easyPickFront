@@ -12,8 +12,8 @@ export default function Home() {
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const ONE_WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000; //Milliseconds in one week
-  const urlMovies = "easypickback-production.up.railway.app/movies";
-  const urlSeries = "easypickback-production.up.railway.app/series";
+  const urlMovies = "https://easypickback-production.up.railway.app/movies";
+  const urlSeries = "https://easypickback-production.up.railway.app/series";
   // const urlMovies = "http://localhost:3030/movies";
   // const urlSeries = "http://localhost:3030/series";
 
