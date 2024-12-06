@@ -51,7 +51,7 @@ export default function Comments({ contentId }) {
 
     try {
       const response = await axios.post(
-        "easypickback-production.up.railway.app/comments",
+        "https://easypickback-production.up.railway.app/comments",
         { comment, contentId },
         {
           headers: {
