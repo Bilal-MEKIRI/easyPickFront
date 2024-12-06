@@ -52,7 +52,7 @@ export default function SignIn() {
       const sanitizedPassword = DOMPurify.sanitize(password);
 
       const response = await axios.post(
-        "easypickback-production.up.railway.app/users",
+        "https://easypickback-production.up.railway.app/users",
         {
           userName: sanitizedUserName,
           email: sanitizedEmail,

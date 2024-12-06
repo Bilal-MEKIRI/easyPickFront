@@ -57,7 +57,7 @@ export default function Contact() {
       const sanitizedMessage = DOMPurify.sanitize(message);
 
       const response = await axios.post(
-        "easypickback-production.up.railway.app/emails",
+        "https://easypickback-production.up.railway.app/emails",
         {
           firstName: sanitizedFirstName,
           lastName: sanitizedLastName,
